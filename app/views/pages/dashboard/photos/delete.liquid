@@ -1,0 +1,8 @@
+---
+method: post
+---
+{% liquid
+  graphql r = 'photos/delete', id: context.params.id
+  return context.params.id
+%}
+

@@ -1,0 +1,21 @@
+{% comment %}PARTIAL INPUT{% endcomment %}
+{% parse_json item %}
+  {
+    "id":          null,
+    "owner":       1,
+    "name":        "item-name",
+    "tags":        ["item.tags"],
+    "description": "item.description",
+    "price":       900,
+    "uuid":        "item.uuid"
+  }
+{% endparse_json %}
+
+{% comment %}TEST OUTPUT ERRORS RETURNED{% endcomment %}
+{% liquid
+  function object = 'lib/commands/items/create/check', object: item
+
+  function contract = 'test/assertions/presence', contract: contract, object: object, field_name: 'name'
+  function contract = 'test/assertions/not_valid_object', contract: contract, object: object, field_name: 'item'
+  function contract = 'test/assertions/presence', contract: contract, object: object.errors, field_name: 'price'
+%}

@@ -1,0 +1,20 @@
+{% parse_json data %}
+  {
+    "id":          null,
+    "owner":       "1",
+    "name":        "item-name",
+    "tags":        ["item.tags"],
+    "description": "item.description",
+    "type":        "item.type",
+    "price":       100,
+    "uuid":        "item.uuid"
+  }
+{% endparse_json %}
+
+{% liquid
+  function object = 'lib/commands/items/create/execute', object: data
+
+  function contract = 'test/assertions/presence', contract: contract, object: object, field_name: 'id'
+
+  function foo = 'lib/commands/items/delete', item: object
+%}

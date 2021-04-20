@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include 'theme/simple/layout/head' %}
+    {% yield 'metatags' %}
+    {% yield 'custom_styles' %}
+  </head>
+
+  <body class="font-sans antialiased leading-normal text-content bg-page">
+    {% include 'theme/simple/layout/main', current_profile: context.exports.current_profile %}
+    {% yield 'custom_scripts' %}
+  </body>
+</html>

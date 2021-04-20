@@ -1,0 +1,181 @@
+query search(
+  $id: ID
+  $limit: Int = 20
+  $status: [String!]
+  $tag: String
+  $keyword: String
+  $category: String
+  $owner: String
+  $sort: RecordsSortInput = { created_at: { order: DESC } }
+  $withStatuses: Boolean = false
+  $withOrders: Boolean = false
+) {
+  items: records(
+    per_page: $limit
+    filter: {
+      id: { value: $id }
+      table: { value: "item" }
+      deleted_at: { exists: false }
+      properties: [
+        { name: "c__status", value_in: $status }
+        { name: "owner", value: $owner }
+        { name: "tags", contains: $tag }
+        { name: "category", starts_with: $category }
+      ]
+      or: [
+        { properties: { name: "description", contains: $keyword } }
+        { properties: { name: "name", contains: $keyword } }
+        { properties: { name: "tags", contains: $keyword } }
+        { properties: { name: "category", contains: $keyword } }
+        { properties: { name: "short_description", contains: $keyword } }
+        { properties: { name: "location_name", contains: $keyword } }
+        { properties: { name: "location_address", contains: $keyword } }
+        { properties: { name: "zip_code", contains: $keyword } }
+        { properties: { name: "location_type", contains: $keyword } }
+        { properties: { name: "pricing_type", contains: $keyword } }
+        { properties: { name: "quantity", contains: $keyword } }
+        { properties: { name: "availability", contains: $keyword } }
+        { properties: { name: "monday_from_hr", contains: $keyword } }
+        { properties: { name: "monday_from_min", contains: $keyword } }        
+        { properties: { name: "monday_to_hr", contains: $keyword } }
+        { properties: { name: "monday_to_min", contains: $keyword } }
+        { properties: { name: "tuesday_from_hr", contains: $keyword } }
+        { properties: { name: "tuesday_from_min", contains: $keyword } }        
+        { properties: { name: "tuesday_to_hr", contains: $keyword } }
+        { properties: { name: "tuesday_to_min", contains: $keyword } }
+        { properties: { name: "wednesday_from_hr", contains: $keyword } }
+        { properties: { name: "wednesday_from_min", contains: $keyword } }        
+        { properties: { name: "wednesday_to_hr", contains: $keyword } }
+        { properties: { name: "wednesday_to_min", contains: $keyword } }
+        { properties: { name: "thursday_from_hr", contains: $keyword } }
+        { properties: { name: "thursday_from_min", contains: $keyword } }        
+        { properties: { name: "thursday_to_hrthursday", contains: $keyword } }
+        { properties: { name: "thursday_to_min", contains: $keyword } }
+        { properties: { name: "friday_from_hr", contains: $keyword } }
+        { properties: { name: "friday_from_min", contains: $keyword } }        
+        { properties: { name: "friday_to_hr", contains: $keyword } }
+        { properties: { name: "friday_to_min", contains: $keyword } }
+        { properties: { name: "saturday_from_hr", contains: $keyword } }
+        { properties: { name: "saturday_from_min", contains: $keyword } }        
+        { properties: { name: "saturday_to_hr", contains: $keyword } }
+        { properties: { name: "saturday_to_min", contains: $keyword } }
+        { properties: { name: "sunday_from_hr", contains: $keyword } }
+        { properties: { name: "sunday_from_min", contains: $keyword } }        
+        { properties: { name: "sunday_to_hr", contains: $keyword } }
+        { properties: { name: "sunday_to_min", contains: $keyword } }
+        { properties: { name: "property_status", contains: $keyword } }
+        { properties: { name: "price_per_hour", contains: $keyword } }
+        { properties: { name: "price_per_day", contains: $keyword } }
+        { properties: { name: "price_per_work_week", contains: $keyword } }
+        { properties: { name: "price_per_calender_week", contains: $keyword } }
+        { properties: { name: "price_per_month", contains: $keyword } }
+        
+      ]
+    }
+    sort: [$sort]
+  ) {
+    total_entries
+    results {
+      id
+      created_at
+      type: table
+
+      uuid: property(name: "uuid")
+      name: property(name: "name")
+      category: property(name: "category")
+      description: property(name: "description")
+      price: property_int(name: "price")
+      tags: property_array(name: "tags")
+      cover_photo_url: property(name: "cover_photo_url")
+      c__status: property(name: "c__status")
+      slug: property(name: "slug")
+      short_description: property(name: "short_description")
+      location_name: property(name: "location_name")
+      location_address: property(name: "location_address")
+      zip_code: property(name: "zip_code")
+      location_type: property(name: "location_type")
+      pricing_type: property(name: "pricing_type")
+      quantity: property(name: "quantity")
+      availability: property(name: "availability")
+      monday_from_hr: property(name: "monday_from_hr")
+      monday_from_min: property(name: "monday_from_min")
+      monday_to_hr: property(name: "monday_to_hr")
+      monday_to_min: property(name: "monday_to_min")
+      tuesday_from_hr: property(name: "tuesday_from_hr")
+      tuesday_from_min: property(name: "tuesday_from_min")
+      tuesday_to_hr: property(name: "tuesday_to_hr")
+      tuesday_to_min: property(name: "tuesday_to_min")
+      wednesday_from_hr: property(name: "wednesday_from_hr")
+      wednesday_from_min: property(name: "wednesday_from_min")
+      wednesday_to_hr: property(name: "wednesday_to_hr")
+      wednesday_to_min: property(name: "wednesday_to_min")
+      thursday_from_hr: property(name: "thursday_from_hr")
+      thursday_from_min: property(name: "thursday_from_min")
+      thursday_to_hr: property(name: "thursday_to_hr")
+      thursday_to_min: property(name: "thursday_to_min")
+      friday_from_hr: property(name: "friday_from_hr")
+      friday_from_min: property(name: "friday_from_min")
+      friday_to_hr: property(name: "friday_to_hr")
+      friday_to_min: property(name: "friday_to_min")
+      saturday_from_hr: property(name: "saturday_from_hr")
+      saturday_from_min: property(name: "saturday_from_min")
+      saturday_to_hr: property(name: "saturday_to_hr")
+      saturday_to_min: property(name: "saturday_to_min")
+      sunday_from_hr: property(name: "sunday_from_hr")
+      sunday_from_min: property(name: "sunday_from_min")
+      sunday_to_hr: property(name: "sunday_to_hr")
+      sunday_to_min: property(name: "sunday_to_min")
+      property_status: property(name: "property_status")
+      price_per_hour: property(name: "price_per_hour")
+      price_per_day: property(name: "price_per_day")
+      price_per_work_week: property(name: "price_per_work_week")
+      price_per_calender_week: property(name: "price_per_calender_week")
+      price_per_month: property(name: "price_per_month")
+
+
+      owner: related_record(
+        table: "profile"
+        join_on_property: "owner"
+        foreign_property: "id"
+      ) {
+        id
+        type: table
+        name: property(name: "name")
+        slug: property(name: "slug")
+      }
+
+      status: related_record(
+        join_on_property: "id"
+        foreign_property: "object_id"
+        table: "status"
+        sort: { created_at: { order: ASC } }
+      ) @include(if: $withStatuses) {
+        id
+        created_at
+        name: property(name: "name")
+        object_id: property(name: "object_id")
+      }
+
+      line_items: related_records(
+        join_on_property: "id"
+        foreign_property: "item_id"
+        table: "line_item"
+      ) @include(if: $withOrders) {
+        id
+      }
+
+      photos: related_records(
+        table: "photo"
+        join_on_property: "uuid"
+        foreign_property: "object_uuid"
+      ) {
+        id
+        photo: property_upload(name: "photo") {
+          file_name
+          url
+          versions
+        }
+      }
+    }
+  }
+}

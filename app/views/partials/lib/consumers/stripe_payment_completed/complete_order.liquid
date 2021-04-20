@@ -1,0 +1,6 @@
+{% liquid
+  assign object_id = event.object.id
+  assign profile_id = event.actor.id
+
+  function status = 'lib/commands/statuses/create', profile_id: profile_id, object_id: object_id, name: 'paid', scope: 'app.statuses.orders'
+%}

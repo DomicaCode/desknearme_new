@@ -1,0 +1,17 @@
+{% liquid
+  if user_id == blank
+    return null
+  endif
+
+  if membership == null
+    assign membership = false
+  endif
+  if followships == null
+    assign followships = false
+  endif
+
+  function current_profile = 'lib/queries/profiles/find', user_id: user_id, id: id, followships: followships, membership: membership
+  export current_profile
+
+  return current_profile
+%}

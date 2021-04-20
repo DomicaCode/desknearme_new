@@ -1,0 +1,45 @@
+{% liquid
+  if order.id
+    assign path = 'update'
+  else
+    assign path = 'create'
+  endif
+%}
+
+<!-- `role` does not exist -->
+<h1 class="mb-8 text-2xl">
+  <a href="/dashboard">{{ 'app.dashboard' | t }}</a>
+  <!-- / {{ 'app.' | append: role | t }} -->
+  / {{ 'app.orders.new' | t }}
+</h1>
+
+
+<table class="w-full table-auto">
+  <thead>
+    <tr>
+      <th class="px-4 py-2 text-left">{{ 'app.name' | t }}</th>
+      <th class="px-4 py-2 text-left">{{ 'app.price' | t }}</th>
+      <th class="px-4 py-2 text-left">{{ 'app.quantity' | t }}</th>
+      <th class="px-4 py-2 text-left">{{ 'app.total' | t }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="px-4 py-2 border">{{ item.name }}</td>
+      <td class="px-4 py-2 border">{{ item.price | pricify_cents }}</td>
+      <td class="px-4 py-2 border">1</td>
+      <td class="px-4 py-2 border">{{ order.total | pricify_cents }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<form action="/orders/{{ path }}" method="post" class="mt-4">
+  {% include 'authenticity_token' %}
+  <input type="hidden" name="item_id" value="{{ item.id }}"/>
+
+  <button id="checkoutbutton" class="button">{{ 'app.checkout' | t }}</button>
+</form>
+
+{% if order.errors.base %}
+  <h3 class="text-danger">{{ order.errors.base | join: ', ' }}</h3>
+{% endif %}

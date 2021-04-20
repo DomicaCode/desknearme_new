@@ -1,0 +1,825 @@
+{% liquid
+  if item.id
+    assign path = 'update'
+  else
+    assign path = 'create'
+  endif
+  assign uuid = '' | uuid
+  assign item_uuid = item.uuid | default: uuid
+  assign image_delete_token = authenticity_token | default: context.authenticity_token
+%}
+
+<div class="container flex flex-wrap items-center mx-auto">
+  <input type="hidden" name="image_delete_token" id="image_delete_token" value="{{ image_delete_token }}" />
+  <form action="/dashboard/items/{{ path }}" method="post" id="property_frm">
+    {% include 'authenticity_token' %}
+
+    {% if item.id %}
+    <input type="hidden" name="item[id]" value="{{ item.id }}" />
+    {% endif %}
+    <input type="hidden" name="item[uuid]" value="{{ item_uuid }}" />
+
+    <div class="my-3">
+      <label class="block" for="name">{{ 'app.items.form.name' | t }}</label>
+      <input class="w-2/3 form-input" type="text" id="name" name="item[name]" value="{{ item.name }}" autofocus required />
+      {% include 'theme/simple/field_error', errors: object.errors.name %}
+    </div>
+
+    <div class="mt-3">
+      <label class="block">{{ 'app.items.form.photos' | t }}</label>
+      {% include 'theme/simple/photos/uppy_area' %}
+    </div>
+
+    {% if path == 'update' %}
+    <div class="mt-3" style="display:block;">
+    {% else %}
+    <div class="mt-3" style="display:none;">
+    {% endif %}
+      <label class="block" for="price">Images</label>
+      <a id="myBtnViewPhotos" style="cursor:pointer;" herf="javascript:void();">View</a>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModalViewPhotos" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span id="remove_photo_msg" style="dislay:none; color:green;"></span>
+        <span class="close">&times;</span>
+        <table name="price_table" id="price_table" border="1" cellpadding="1" cellspacing="0">
+        <tr>
+          <th align="left" style="width:280px;">Image</th>
+          <th align="left">Action</th>
+        </tr>
+
+        {% if item.photos.size > 0 %}
+
+        {% for p in item.photos limit: 5 %}
+        <tr id="remove_image_tr_{{ p.id }}"">
+          <td><img width="200" height="100" src="{{ p.photo.versions.uncropped }}" alt="{{ item.name }}"></td>
+          <td><a class="remove_image_a" id="remove_image_{{ p.id }}" href="javascript:void(0);">Remove</a></td>
+        </tr>
+        {% endfor %}
+        
+        {% endif %}        
+        </table>
+      </div>
+
+    </div>
+
+    
+    <div class="mt-3">
+      <label class="block" for="category">{{ 'app.items.form.category' | t }}</label>
+      <select class="form-select" id="category" name="item[category]">
+        {% for category in lib.categories %}
+          {% assign ident = category | split: '/' | size | minus: 1 | times: 2 %}
+          <option value="{{ category }}" {% if item.category == category %}selected{% endif %}>
+              {% for step in (1..ident) %} {% print "&nbsp;" %} {% endfor %}
+              {{ 'categories.' | append: category | t }}
+          </option>
+        {% endfor %}
+      </select>
+
+      {% include 'theme/simple/field_error', errors: object.errors.category %}
+    </div>
+
+    <div class="mt-3">
+      <label class="block" for="short_description">Short Description</label>
+      <textarea class="w-full form-input" type="text" id="short_description" name="item[short_description]" rows="3" required>{{ item.short_description }}</textarea>
+
+      {% include 'theme/simple/field_error', errors: item.errors.short_description %}
+    </div>
+
+
+    <div class="mt-3">
+      <label class="block" for="description">{{ 'app.items.form.description' | t }}</label>
+      <textarea class="w-full form-input" type="text" id="description" name="item[description]" rows="3" required>{{ item.description }}</textarea>
+
+      {% include 'theme/simple/field_error', errors: object.errors.description %}
+    </div>
+
+    <div class="mt-3">
+      <label class="block" for="location_name">Location Name</label>
+      <input class="w-2/3 form-input" type="text" id="location_name" name="item[location_name]" value="{{ item.location_name }}" autofocus required />
+
+      {% include 'theme/simple/field_error', errors: item.errors.location_name %}
+    </div>
+
+    <div class="mt-3">
+      <label class="block" for="location_address">Location Address</label>
+      <textarea class="w-full form-input" type="text" id="location_address" name="item[location_address]" rows="3" required>{{ item.location_address }}</textarea>
+
+      {% include 'theme/simple/field_error', errors: item.errors.location_address %}
+    </div>
+
+    <div class="mt-3">
+      <label class="block" for="zip_code">Zip Code</label>
+      <input class="w-2/3 form-input" type="text" id="zip_code" name="item[zip_code]" value="{{ item.zip_code }}" autofocus required />
+
+      <span style="color:red; display:none;" id="err_zip_code"></span>
+      {% include 'theme/simple/field_error', errors: item.errors.zip_code %}
+    </div>
+
+    <div class="mt-3">
+      <label class="block" for="location_type">Location Type</label>
+      <select class="form-select" id="location_type" name="item[location_type]">
+        <option value="Business" {% if item.location_type == 'Business' %}selected{% endif %}>Business</option>
+        <option value="Co-Working" {% if item.location_type == 'Co-Working' %}selected{% endif %}>Co-Working</option>
+        <option value="Public" {% if item.location_type == 'Public' %}selected{% endif %}>Public</option>
+        <option value="Executive Suites" {% if item.location_type == 'Executive Suites' %}selected{% endif %}>Executive Suites</option>
+      </select>
+
+      {% include 'theme/simple/field_error', errors: item.errors.location_type %}
+    </div>
+
+    <div class="mt-3" style="display:none;">
+      <label class="block" for="pricing_type">Pricing Type</label>
+      <select class="form-select" id="pricing_type" name="item[pricing_type]">
+        <option value="Per Hour" {% if item.pricing_type == 'Per Hour' %}selected{% endif %}>Per Hour</option>
+        <option value="Per Day" {% if item.pricing_type == 'Per Day' %}selected{% endif %}>Per Day</option>
+        <option value="Per work week (5 days)" {% if item.pricing_type == 'Per work week (5 days)' %}selected{% endif %}>Per work week (5 days)</option>
+        <option value="Per calendar week (7 days)" {% if item.pricing_type == 'Per calendar week (7 days)' %}selected{% endif %}>Per calendar week (7 days)</option>
+        <option value="Per calendar month" {% if item.pricing_type == 'Per calendar month' %}selected{% endif %}>Per calendar month</option>
+      </select>
+
+      {% include 'theme/simple/field_error', errors: item.errors.pricing_type %}
+    </div>
+
+     <div class="mt-3" style="display:none;">
+      <label class="block" for="price">{{ 'app.items.form.price' | t }}</label>
+      <!-- TODO: Add currency prefix $[input]  -->
+      <input class="w-32 form-input" type="number" id="price" name="item[price]"
+        value="{{ item.price | default: 1000 | pricify_cents | replace_regex: '[\$\,]', '' }}" />
+      {% include 'theme/simple/field_error', errors: object.errors.price %}
+    </div>
+
+    <div class="mt-3">
+      <label class="block" for="price">{{ 'app.items.form.price' | t }}</label>
+      <a id="myBtn" style="cursor:pointer;" herf="javascript:void();">Add/View Price</a>
+    </div>
+
+    <!-- Trigger/Open The Modal -->
+    <!--<button id="myBtn">Open Modal</button>-->
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <table name="price_table" id="price_table" border="1" cellpadding="1" cellspacing="0">
+        <tr>
+          <th align="left" style="width:280px;">Pricing Type:</th>
+          <th align="left">Price</th>
+        </tr>
+        <tr>
+          <td>Per Hour</td>
+          <td><input type="text" name="item[price_per_hour]" id="price_per_hour" value="{{ item.price_per_hour }}"></td>
+        </tr>
+        <tr>
+          <td>Per Day</td>
+          <td><input type="text" name="item[price_per_day]" id="price_per_day" value="{{ item.price_per_day }}"></td>
+        </tr>
+        <tr>
+          <td>Per Work Week(5 Days)</td>
+          <td><input type="text" name="item[price_per_work_week]" id="price_per_work_week" value="{{ item.price_per_work_week }}"></td>
+        </tr>
+        <tr>
+          <td>Per Calender Week(7 Days)</td>
+          <td><input type="text" name="item[price_per_calender_week]" id="price_per_calender_week" value="{{ item.price_per_calender_week }}"></td>
+        </tr>
+        <tr>
+          <td>Per Month</td>
+          <td><input type="text" name="item[price_per_month]" id="price_per_month" value="{{ item.price_per_month }}"></td>
+        </tr>
+        
+        </table>
+      </div>
+
+    </div>
+
+
+    <div class="mt-3">
+        <label class="block" for="quantity">Quantity</label>
+        <input class="w-32 form-input" type="number" id="quantity" name="item[quantity]" value="{{ item.quantity | default: 1 }}" />
+        {% include 'theme/simple/field_error', errors: item.errors.quantity %}
+    </div>
+
+
+    <div class="mt-3">
+      <label class="block" for="availability">Availability</label>
+      <select class="form-select" id="availability" name="item[availability]">
+        <option value="Mon to Fri (9:00AM - 6:00PM)" {% if item.availability == 'Mon to Fri (9:00AM - 6:00PM)' %}selected{% endif %}>Mon to Fri (9:00AM - 6:00PM)</option>
+        <option value="Customize" {% if item.availability == 'Customize' %}selected{% endif %}>Customize</option>
+      </select>
+
+      {% include 'theme/simple/field_error', errors: item.errors.availability %}
+    </div>
+
+     {% if item.availability == 'Customize' %}
+     <div id="custom_availability_div" style="display:block;">
+     {% else %}
+     <div id="custom_availability_div" style="display:none;">
+     {% endif %}
+
+    
+      <div class="mt-3">
+
+        <table border="0" style="width:100%" cellspacing="10">
+        <tr>
+        <td>        
+        <label class="block" for="pricing_type">Mon(From Hrs)</label>
+        <select class="form-select" id="monday_from_hr" name="item[monday_from_hr]">
+          <option value="">From(Hour){{ monday_from_hr }}</option>
+          {% for i in (0..23) %}   
+
+            {% assign monday_from_hr = item.monday_from_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if monday_from_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Mon(From Min)</label>
+        <select class="form-select" id="monday_from_min" name="item[monday_from_min]">
+          <option value="">From(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign monday_from_min = item.monday_from_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if monday_from_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Mon(To Hrs)</label>
+        <select class="form-select" id="monday_to_hr" name="item[monday_to_hr]">
+          <option value="">Upto(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign monday_to_hr = item.monday_to_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if monday_to_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Mon(To Min)</label>
+        <select class="form-select" id="monday_to_min" name="item[monday_to_min]">
+          <option value="">Upto(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign monday_to_min = item.monday_to_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if monday_to_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+
+        {% include 'theme/simple/field_error', errors: item.errors.pricing_type %}
+
+        </tr>
+        </table>
+      </div>
+
+      <div class="mt-3">
+
+        <table border="0" style="width:100%" cellspacing="10">
+        <tr>
+        <td> 
+        <label class="block" for="pricing_type">Tue(From Hrs)</label>
+        <select class="form-select" id="tuesday_from_hr" name="item[tuesday_from_hr]">
+          <option value="">From(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign tuesday_from_hr = item.tuesday_from_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if tuesday_from_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td> 
+        <label class="block" for="pricing_type">Tue(From Min)</label>
+        <select class="form-select" id="tuesday_from_min" name="item[tuesday_from_min]">
+          <option value="">From(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign tuesday_from_min = item.tuesday_from_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if tuesday_from_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td> 
+        <label class="block" for="pricing_type">Tue(To Hrs)</label>
+        <select class="form-select" id="tuesday_to_hr" name="item[tuesday_to_hr]">
+          <option value="">Upto(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign tuesday_to_hr = item.tuesday_to_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if tuesday_to_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td> 
+        <label class="block" for="pricing_type">Tue(To Min)</label>
+        <select class="form-select" id="tuesday_to_min" name="item[tuesday_to_min]">
+          <option value="">Upto(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign tuesday_to_min = item.tuesday_to_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if tuesday_to_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+        </tr>
+        </table>
+
+
+        {% include 'theme/simple/field_error', errors: item.errors.pricing_type %}
+      </div>
+
+
+      <div class="mt-3">
+
+        <table border="0" style="width:100%" cellspacing="10">
+        <tr>
+        <td> 
+        <label class="block" for="pricing_type">Wed(From Hrs)</label>
+        <select class="form-select" id="wednesday_from_hr" name="item[wednesday_from_hr]">
+          <option value="">From(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign wednesday_from_hr = item.wednesday_from_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if wednesday_from_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td> 
+        <label class="block" for="pricing_type">Wed(From Min)</label>
+        <select class="form-select" id="wednesday_from_min" name="item[wednesday_from_min]">
+          <option value="">From(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign wednesday_from_min = item.wednesday_from_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if wednesday_from_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td> 
+        <label class="block" for="pricing_type">Wed(To Hrs)</label>
+        <select class="form-select" id="wednesday_to_hr" name="item[wednesday_to_hr]">
+          <option value="">Upto(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign wednesday_to_hr = item.wednesday_to_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if wednesday_to_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td> 
+        <label class="block" for="pricing_type">Wed(To Min)</label>
+        <select class="form-select" id="wednesday_to_min" name="item[wednesday_to_min]">
+          <option value="">Upto(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign wednesday_to_min = item.wednesday_to_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if wednesday_to_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+        </tr>
+        </table>
+
+
+        {% include 'theme/simple/field_error', errors: item.errors.pricing_type %}
+      </div>
+
+      <div class="mt-3">
+
+        <table border="0" style="width:100%" cellspacing="10">
+        <tr>
+        <td> 
+        <label class="block" for="pricing_type">Thurs(From Hrs)</label>
+        <select class="form-select" id="thursday_from_hr" name="item[thursday_from_hr]">
+          <option value="">From(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign thursday_from_hr = item.thursday_from_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if thursday_from_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Thurs(From Min)</label>
+        <select class="form-select" id="thursday_from_min" name="item[thursday_from_min]">
+          <option value="">From(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign thursday_from_min = item.thursday_from_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if thursday_from_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Thurs(To Hrs)</label>
+        <select class="form-select" id="thursday_to_hr" name="item[thursday_to_hr]">
+          <option value="">Upto(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign thursday_to_hr = item.thursday_to_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if thursday_to_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        <td>
+
+        <td>
+        <label class="block" for="pricing_type">Thurs(To Min)</label>
+        <select class="form-select" id="thursday_to_min" name="item[thursday_to_min]">
+          <option value="">Upto(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign thursday_to_min = item.thursday_to_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if thursday_to_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+        </tr>
+        </table>
+
+        {% include 'theme/simple/field_error', errors: item.errors.pricing_type %}
+      </div>
+
+      <div class="mt-3">
+
+        <table border="0" style="width:100%" cellspacing="10">
+        <tr>
+        <td>
+        <label class="block" for="pricing_type">Fri(From Hrs)</label>
+        <select class="form-select" id="friday_from_hr" name="item[friday_from_hr]">
+          <option value="">From(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign friday_from_hr = item.friday_from_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if friday_from_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Fri(From Min)</label>
+        <select class="form-select" id="friday_from_min" name="item[friday_from_min]">
+          <option value="">From(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign friday_from_min = item.friday_from_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if friday_from_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Fri(To Hrs)</label>
+        <select class="form-select" id="friday_to_hr" name="item[friday_to_hr]">
+          <option value="">Upto(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign friday_to_hr = item.friday_to_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if friday_to_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Fri(To Min)</label>
+        <select class="form-select" id="friday_to_min" name="item[friday_to_min]">
+          <option value="">Upto(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign friday_to_min = item.friday_to_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if friday_to_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+        </tr>
+        </table>
+
+        {% include 'theme/simple/field_error', errors: item.errors.pricing_type %}
+      </div>
+
+      <div class="mt-3">
+
+        <table border="0" style="width:100%" cellspacing="10">
+        <tr>
+        <td>
+        <label class="block" for="pricing_type">Sat(From Hrs)</label>
+        <select class="form-select" id="saturday_from_hr" name="item[saturday_from_hr]">
+          <option value="">From(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign saturday_from_hr = item.saturday_from_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if saturday_from_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Sat(From Min)</label>
+        <select class="form-select" id="saturday_from_min" name="item[saturday_from_min]">
+          <option value="">From(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign saturday_from_min = item.saturday_from_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if saturday_from_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Sat(To Hrs)</label>
+        <select class="form-select" id="saturday_to_hr" name="item[saturday_to_hr]">
+          <option value="">Upto(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign saturday_to_hr = item.saturday_to_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if saturday_to_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Sat(To Min)</label>
+        <select class="form-select" id="saturday_to_min" name="item[saturday_to_min]">
+          <option value="">Upto(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign saturday_to_min = item.saturday_to_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if saturday_to_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+        </tr>
+        </table>
+
+        {% include 'theme/simple/field_error', errors: item.errors.pricing_type %}
+      </div>
+
+      <div class="mt-3">
+
+        <table border="0" style="width:100%" cellspacing="10">
+        <tr>
+        <td>
+        <label class="block" for="pricing_type">Sun(From Hrs)</label>
+        <select class="form-select" id="sunday_from_hr" name="item[sunday_from_hr]">
+          <option value="">From(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign sunday_from_hr = item.sunday_from_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if sunday_from_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Sun(From Min)</label>
+        <select class="form-select" id="sunday_from_min" name="item[sunday_from_min]">
+          <option value="">From(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign sunday_from_min = item.sunday_from_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if sunday_from_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Sun(To Hrs)</label>
+        <select class="form-select" id="sunday_to_hr" name="item[sunday_to_hr]">
+          <option value="">Upto(Hour)</option>
+          {% for i in (0..23) %}            
+            {% assign sunday_to_hr = item.sunday_to_hr | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if sunday_to_hr == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+
+        <td>
+        <label class="block" for="pricing_type">Sun(To Min)</label>
+        <select class="form-select" id="sunday_to_min" name="item[sunday_to_min]">
+          <option value="">Upto(Minute)</option>
+          {% for i in (0..59) %}            
+            {% assign sunday_to_min = item.sunday_to_min | plus: 0 %}
+            {% assign i = i | plus: 0 %}
+         
+            <option value="{{ i }}" {% if sunday_to_min == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+        </td>
+        </tr>
+        </table>
+
+        {% include 'theme/simple/field_error', errors: item.errors.pricing_type %}
+      </div>
+
+    </div>
+
+    <div class="mt-3">
+      <label class="block" for="property_status">Property Status</label>
+      <select class="form-select" id="property_status" name="item[property_status]">
+        <option value="active" {% if item.property_status == 'active' %}selected{% endif %}>Active</option>
+        <option value="inactive" {% if item.property_status == 'inactive' %}selected{% endif %}>Inactive</option>
+      </select>
+
+      {% include 'theme/simple/field_error', errors: item.errors.property_status %}
+    </div>
+
+    {% comment %}
+    <div class="mt-3">
+      <label class="block" for="tags">Tags</label>
+      <input class="w-full form-input" type="text" id="tags" name="item[tags]" value="{{ item.tags | join: ',' }}" />
+      {% if item.errors.tags %}
+      <span class="text-red-800">{{ item.errors.tags }}</span>
+      {% endif %}
+    </div>
+    {% endcomment %}
+
+   
+    <!--<button class="mt-8 button" value="{{ path }}">{{ 'app.items.form.submit' | t }}</button>-->
+    <input class="mt-8 button" type="button" name="property_submit" id="property_submit" value="{{ path }}" />
+  </form>
+
+  
+  <style>
+    /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+
+  <script type="text/javascript">
+
+    var modal = document.getElementById("myModal");
+    var photosModal = document.getElementById("myModalViewPhotos");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+    var btnPhotos = document.getElementById("myBtnViewPhotos");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    btnPhotos.onclick = function() {
+      photosModal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+      photosModal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+
+      if (event.target == photosModal) {
+        photosModal.style.display = "none";
+      }
+    }
+
+  </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+      $('#availability').change(function(){
+        
+        if($('#availability').val() == 'Customize') {
+          $('#custom_availability_div').slideDown();
+        } else {
+          $('#custom_availability_div').slideUp();
+        }
+      });
+
+      $('#property_submit').click(function(){
+        var zip_code = $('#zip_code').val();
+        var zip_code_url = 'https://app.zipcodebase.com/landing_demo/?codes='+zip_code+'&country=';
+
+        $.getJSON(zip_code_url, function (data, textStatus, jqXHR){
+            console.log(data.results);
+            console.log(data.results.length);
+            if(data.results.length == 0) {
+              $('#err_zip_code').html('Invlid Zip Code!');
+              $('#err_zip_code').show();
+              $('#zip_code').focus();
+            } else {
+              $('#err_zip_code').html('');
+              $('#err_zip_code').hide();
+              $('#property_frm').submit();
+            }
+        });
+      });
+
+      $('.remove_image_a').click(function(){
+        var ans = confirm("Do you really want to delete this image?");
+        if(ans) {
+          $('#remove_photo_msg').hide();
+          $('#remove_photo_msg').html('');
+          var this_id = $(this).attr('id');
+          var this_photo_id = this_id.split('_')[2];
+          var authenticity_token = $('#image_delete_token').val();
+          //alert("Work is under progress "+this_photo_id);
+          $.post('/dashboard/photos/delete', {
+                id:this_photo_id, 
+                authenticity_token: authenticity_token}, 
+          function(response){ 
+                //alert("success");
+                $('#remove_image_tr_'+this_photo_id).hide();
+                $('#remove_photo_msg').html("Photo has been deleted successfully.");
+                $('#remove_photo_msg').show();
+          });
+        }
+      });
+    });
+    </script>
+
+</div>
+{% liquid
+  assign photos = photos | default: item.photos
+  render 'theme/simple/photos/uppy_form', object_uuid: item_uuid, presigned_url: presigned_url, user_id: user.id, photo_type: 'photo', note: 'Images only, up to 3 files, 2MB each', max_number_of_files: 3, existing_photos: photos
+%}

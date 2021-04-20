@@ -1,0 +1,172 @@
+mutation create_item(
+  $name: String!
+  $description: String
+  $tags: [String]
+  $owner: String!
+  $category: String
+  $price: Int!
+  $uuid: String!
+  $short_description: String!
+  $location_name: String!
+  $location_address: String!
+  $zip_code: String!
+  $location_type: String!
+  $pricing_type: String!
+  $quantity: Int!
+  $availability: String!
+  $monday_from_hr: Int
+  $monday_from_min: Int
+  $monday_to_hr: Int
+  $monday_to_min: Int
+  $tuesday_from_hr: Int
+  $tuesday_from_min: Int
+  $tuesday_to_hr: Int
+  $tuesday_to_min: Int
+  $wednesday_from_hr: Int
+  $wednesday_from_min: Int
+  $wednesday_to_hr: Int
+  $wednesday_to_min: Int
+  $thursday_from_hr: Int
+  $thursday_from_min: Int
+  $thursday_to_hr: Int
+  $thursday_to_min: Int
+  $friday_from_hr: Int
+  $friday_from_min: Int
+  $friday_to_hr: Int
+  $friday_to_min: Int
+  $saturday_from_hr: Int
+  $saturday_from_min: Int
+  $saturday_to_hr: Int
+  $saturday_to_min: Int
+  $sunday_from_hr: Int
+  $sunday_from_min: Int
+  $sunday_to_hr: Int
+  $sunday_to_min: Int
+  $property_status: String!
+  $price_per_hour: Int!
+  $price_per_day: Int!
+  $price_per_work_week: Int!
+  $price_per_calender_week: Int!
+  $price_per_month: Int!
+
+) {
+  model_create(
+    model: {
+      model_schema_name: "item"
+      properties: [
+        { name: "uuid", value: $uuid }
+        { name: "name", value: $name }
+        { name: "description", value: $description }
+        { name: "tags", value_array: $tags }
+        { name: "owner", value: $owner }
+        { name: "category", value: $category }
+        { name: "price", value_int: $price }
+        { name: "short_description", value: $short_description }
+        { name: "location_name", value: $location_name }
+        { name: "location_address", value: $location_address }
+        { name: "zip_code", value: $zip_code }
+        { name: "location_type", value: $location_type }
+        { name: "pricing_type", value: $pricing_type }
+        { name: "quantity", value_int: $quantity }
+        { name: "availability", value: $availability }
+        { name: "monday_from_hr", value_int: $monday_from_hr }
+        { name: "monday_from_min", value_int: $monday_from_min }
+        { name: "monday_to_hr", value_int: $monday_to_hr }
+        { name: "monday_to_min", value_int: $monday_to_min }
+        { name: "tuesday_from_hr", value_int: $tuesday_from_hr }
+        { name: "tuesday_from_min", value_int: $tuesday_from_min }
+        { name: "tuesday_to_hr", value_int: $tuesday_to_hr }
+        { name: "tuesday_to_min", value_int: $tuesday_to_min }
+        { name: "wednesday_from_hr", value_int: $wednesday_from_hr }
+        { name: "wednesday_from_min", value_int: $wednesday_from_min }
+        { name: "wednesday_to_hr", value_int: $wednesday_to_hr }
+        { name: "wednesday_to_min", value_int: $wednesday_to_min }
+        { name: "thursday_from_hr", value_int: $thursday_from_hr }
+        { name: "thursday_from_min", value_int: $thursday_from_min }
+        { name: "thursday_to_hr", value_int: $thursday_to_hr }
+        { name: "thursday_to_min", value_int: $thursday_to_min }
+        { name: "friday_from_hr", value_int: $friday_from_hr }
+        { name: "friday_from_min", value_int: $friday_from_min }
+        { name: "friday_to_hr", value_int: $friday_to_hr }
+        { name: "friday_to_min", value_int: $friday_to_min }
+        { name: "saturday_from_hr", value_int: $saturday_from_hr }
+        { name: "saturday_from_min", value_int: $saturday_from_min }
+        { name: "saturday_to_hr", value_int: $saturday_to_hr }
+        { name: "saturday_to_min", value_int: $saturday_to_min }
+        { name: "sunday_from_hr", value_int: $sunday_from_hr }
+        { name: "sunday_from_min", value_int: $sunday_from_min }
+        { name: "sunday_to_hr", value_int: $sunday_to_hr }
+        { name: "sunday_to_min", value_int: $sunday_to_min }
+        { name: "property_status", value: $property_status }
+        { name: "price_per_hour", value_int: $price_per_hour }
+        { name: "price_per_day", value_int: $price_per_day }
+        { name: "price_per_work_week", value_int: $price_per_work_week }
+        { name: "price_per_calender_week", value_int: $price_per_calender_week }
+        { name: "price_per_month", value_int: $price_per_month }
+
+      ]
+    }
+  ) {
+    id
+    properties
+    name: property(name: "name")
+    description: property(name: "description")
+    price: property(name: "price")
+    uuid: property(name: "uuid")
+    short_description: property(name: "short_description")
+    location_name: property(name: "location_name")
+    location_address: property(name: "location_address")
+    zip_code: property(name: "zip_code")
+    location_type: property(name: "location_type")
+    pricing_type: property(name: "pricing_type")
+    quantity: property(name: "quantity")
+    availability: property(name: "availability")
+    monday_from_hr: property(name: "monday_from_hr")
+    monday_from_min: property(name: "monday_from_min")
+    monday_to_hr: property(name: "monday_to_hr")
+    monday_to_min: property(name: "monday_to_min")
+    tuesday_from_hr: property(name: "tuesday_from_hr")
+    tuesday_from_min: property(name: "tuesday_from_min")
+    tuesday_to_hr: property(name: "tuesday_to_hr")
+    tuesday_to_min: property(name: "tuesday_to_min")
+    wednesday_from_hr: property(name: "wednesday_from_hr")
+    wednesday_from_min: property(name: "wednesday_from_min")
+    wednesday_to_hr: property(name: "wednesday_to_hr")
+    wednesday_to_min: property(name: "wednesday_to_min")
+    thursday_from_hr: property(name: "thursday_from_hr")
+    thursday_from_min: property(name: "thursday_from_min")
+    thursday_to_hr: property(name: "thursday_to_hr")
+    thursday_to_min: property(name: "thursday_to_min")
+    friday_from_hr: property(name: "friday_from_hr")
+    friday_from_min: property(name: "friday_from_min")
+    friday_to_hr: property(name: "friday_to_hr")
+    friday_to_min: property(name: "friday_to_min")
+    saturday_from_hr: property(name: "saturday_from_hr")
+    saturday_from_min: property(name: "saturday_from_min")
+    saturday_to_hr: property(name: "saturday_to_hr")
+    saturday_to_min: property(name: "saturday_to_min")
+    sunday_from_hr: property(name: "sunday_from_hr")
+    sunday_from_min: property(name: "sunday_from_min")
+    sunday_to_hr: property(name: "sunday_to_hr")
+    sunday_to_min: property(name: "sunday_to_min")
+    property_status: property(name: "property_status")
+    price_per_hour: property(name: "price_per_hour")
+    price_per_day: property(name: "price_per_day")
+    price_per_work_week: property(name: "price_per_work_week")
+    price_per_calender_week: property(name: "price_per_calender_week")
+    price_per_month: property(name: "price_per_month")
+    
+    category: property(name: "category")
+    slug: property(name: "slug")
+    owner: related_model(
+      model_schema_name: "profile"
+      join_on_property: "owner"
+      foreign_property: "id"
+    ) {
+      id
+      type: model_schema_name
+      name: property(name: "name")
+      slug: property(name: "slug")
+    }
+  }
+}

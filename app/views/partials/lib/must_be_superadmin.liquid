@@ -1,0 +1,9 @@
+{% liquid
+  assign superadmins = context.constants.superadmins | split: ','
+  unless superadmins contains profile.user.email
+    include 'lib/flash/publish', error: 'app.errors.unauthorized'
+
+    redirect_to '/sessions/new'
+    break
+  endunless
+-%}

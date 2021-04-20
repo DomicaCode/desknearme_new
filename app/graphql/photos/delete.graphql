@@ -1,0 +1,5 @@
+mutation delete_photo($id: ID!) {
+  model_delete(
+    id: $id
+  ){ id }
+}

@@ -1,0 +1,66 @@
+/*
+  links
+  titles
+  content
+*/
+
+
+
+/* links
+============================================================================ */
+main a {
+  @apply
+    text-interaction;
+}
+
+main a:hover {
+  @apply
+    text-interaction-hover;
+}
+
+
+
+/* titles
+============================================================================ */
+.bigtitle {
+  @apply
+    mb-4
+    mt-10
+    first:mt-0
+    text-3xl
+    font-semibold;
+}
+
+.title {
+  @apply
+    mb-2
+    text-2xl;
+}
+
+.subtitle {
+  @apply
+    mb-1
+    text-xl;
+}
+
+
+
+/* content
+============================================================================ */
+main p + p {
+  @apply
+    mt-4;
+}
+
+/* small annotations and sidenotes */
+.sidenote {
+  @apply
+    text-xs;
+}
+
+
+
+/* used by alpine.js to mark items before JS initializes */
+[x-cloak] {
+	display: none;
+}

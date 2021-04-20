@@ -1,0 +1,19 @@
+{% if order.status.fullname == 'app.statuses.orders.placed' %}
+  {% include 'theme/simple/orders/review', order: order, checkout_session: checkout_session %}
+
+  {% render 'theme/simple/statuses/quick_form',
+    authenticity_token: context.authenticity_token,
+    name: 'cancelled',
+    scope: 'app.statuses.orders',
+    object_id: order.id,
+    return_to: context.location.href,
+	label: 'app.cancel', secondary: true %}
+
+	{% render 'theme/simple/statuses/quick_form',
+    authenticity_token: context.authenticity_token,
+    name: 'paid',
+    scope: 'app.statuses.orders',
+    object_id: order.id,
+    return_to: '/dashboard/buy/orders',
+    label: 'app.orders.checkout.pay-manually' %}
+{% endif %}

@@ -1,0 +1,12 @@
+---
+method: post
+---
+{% liquid
+  function object = 'lib/commands/sessions/create', object: context.params.user
+
+  if object.valid
+    include 'redirect_to', url: '/', notice: 'app.sessions.created'
+  else
+    include 'theme/simple/sessions/new', object: object
+  endif
+%}

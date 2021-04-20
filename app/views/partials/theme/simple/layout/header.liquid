@@ -1,0 +1,70 @@
+<header class="py-4">
+  <div class="container flex flex-col flex-wrap items-center mx-auto md:flex-row">
+
+    <a class="flex items-center font-medium" href="/">
+      <img width="40" height="40" src="{{ 'images/logo.svg' | asset_url }}" alt="platformOS" class="w-10 h-10 p-2">
+      <span class="ml-3 text-xl">{{ 'app.title' | t }}</span>
+    </a>
+
+    {% include 'theme/simple/home/quick_search_form', qkeyword: context.params.qkeyword %}
+
+    <nav class="flex flex-wrap items-center text-base mx-auto mt-4 lg:mx-0 lg:mt-0">
+      <a href="/dashboard/items/new" class="p-3">{{ 'app.header.add' | t }}</a>
+      <a href="/search" class="p-3">
+        {{ 'app.items.list' | t }}
+      </a>
+      <a href="/groups" class="p-3">
+        {{ 'app.groups.list' | t }}
+      </a>
+      <a href="/posts" class="p-3">
+        {{ 'app.models.posts.list' | t }}
+      </a>
+
+      {% if profile %}
+        {% assign superadmins = context.constants.superadmins | split: ',' %}
+        {% if superadmins contains profile.user.email %}
+          <a href="/admin" class="p-3">{{ 'app.admin' | t }}</a>
+        {% endif %}
+        <a href="/dashboard" class="p-3">{{ 'app.header.feed' | t }}</a>
+        <a href="/inbox" class="p-3" id="notifications-chat" data-current-user-id="{{ profile.id }}" data-current-user-slug="{{ profile.slug }}">
+          <p class="relative">
+            {{ 'app.header.chat' | t }}
+            <span id="notification-bell" style="top: -2px; right: -10px;" class="absolute rounded-full h-3 w-3 bg-pink-500 hidden"></span>
+          </p>
+        </a>
+
+        <div x-data="{ dropdownOpen: false }" class="relative">
+          {% liquid
+            assign avatar_url = profile.avatar.photo.versions.tiny
+            if avatar_url == blank
+              assign avatar_url = "images/user.svg" | asset_url
+            endif
+          %}
+
+          <button @click="dropdownOpen = !dropdownOpen" class="flex items-center relative z-10 px-3 py-2 bg-panel rounded-md focus:outline-none" data-menu-dropdown>
+            <span>{{ profile.first_name | default: profile.name }}</span>
+            <img width="20" height="20" src="{{ avatar_url }}" class="w-5 h-5 rounded-full ml-2">
+          </button>
+
+          <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 z-10 w-full h-full"></div>
+
+          <div x-show="dropdownOpen" x-cloak class="absolute right-0 z-20 w-48 py-2 mt-2 bg-panel rounded-md shadow-xl">
+            <a href="/dashboard" class="block px-4 py-2 text-gray-700 capitalize hover:bg-interaction hover:text-content-inverted">
+              {{ 'app.header.dashboard' | t }}
+            </a>
+            <form action="/sessions/destroy" method="post">
+              {% include 'authenticity_token' %}
+              <button class="block w-full px-4 py-2 text-left text-gray-700 capitalize hover:bg-interaction hover:text-content-inverted">
+                {{ 'app.header.log-out' | t }}
+              </button>
+            </form>
+          </div>
+        </div>
+      {% else %}
+        <a href="/sessions/new" class="ml-3 button button-small">
+          {{ 'app.login' | t }}
+        </a>
+      {% endif %}
+    </nav>
+  </div>
+</header>

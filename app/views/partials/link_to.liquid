@@ -1,0 +1,57 @@
+{% liquid
+  if object
+    case object.type
+    when 'group'
+      assign group = object
+    when 'profile'
+      assign profile = object
+    when 'item'
+      assign item = object
+    when 'category'
+      assign category = object
+    when 'comment'
+      assign comment = object
+    when 'post'
+      assign post = object
+    endcase
+  endif
+
+  if group
+    print "/groups/show/" | append: group.id
+    return "/groups/show/" | append: group.id
+  endif
+
+  if profile
+    print "/profile/" | append: profile.slug
+    return "/profile/" | append: profile.slug
+  endif
+
+  if item
+    function slug = 'generate_slug', title: item.name, id: item.id
+    print "/items/" | append: slug
+    return "/items/" | append: slug
+  endif
+
+  if category
+    print "/c/" | append: category
+    return "/c/" | append: category
+  endif
+
+  if comment
+    if comment.type == 'profile'
+      print "/profile/" | append: profile.slug
+      return "/profile/" | append: profile.slug
+    endif
+  endif
+
+  if order
+    print "/dashboard/buy/orders_show/" | append: order.id
+    return "/dashboard/buy/orders_show/" | append: order.id
+  endif
+
+  if post
+    function slug = 'generate_slug', title: post.title, id: post.id
+    print "/posts/" | append: slug
+    return "/posts/" | append: slug
+  endif
+%}
