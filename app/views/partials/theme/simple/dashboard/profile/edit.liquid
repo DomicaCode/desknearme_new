@@ -1,3 +1,134 @@
+{%
+      assign breadcrumbs = context.page.metadata.breadcrumbs
+%}
+<div id="titlebar">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+        <h2>My Profile</h2>
+
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs">
+          <ul>
+            
+            {% for breadcrumb in breadcrumbs %}
+
+            {% liquid
+              assign is_translation = breadcrumb.label | slice: 0, 4
+
+              if is_translation == 'app.'
+                assign label = breadcrumb.label | t
+              else
+                assign label = breadcrumb.label
+              endif
+            %}
+
+            <li>
+              {% if forloop.last %}
+                <!--<h2>-->
+              {% else %}
+                {% if breadcrumb.url %}
+                  <a href="{{ breadcrumb.url }}">
+                {% endif %}
+              {% endif %}
+                  {{ label }}
+              {% if forloop.last %}
+                {% if value %}
+                    ({{ value }})
+                {% endif %}
+                <!--</h2>-->
+              {% else %}
+                {% if breadcrumb.url %}
+                  </a>
+                {% endif %}
+                
+              {% endif %}
+            </li>
+
+            {% endfor %}
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    {% liquid 
+    render 'theme/simple/dashboard/sidebar'
+    %}
+
+    <div class="col-md-8">
+      <div class="row">
+
+
+        <div class="col-md-8 my-profile">
+          <h4 class="margin-top-0 margin-bottom-30">My Account</h4>
+
+          <form action="/dashboard/profile" method="post">
+
+            {% render 'authenticity_token', context: context %}
+            <input type="hidden" name="_method" value="put" />
+
+
+            <label>Username</label>
+            <input name="profile[name]" value="{{ object.name }}" id="name" type="text">
+
+            <label>First Name</label>
+            <input name="profile[first_name]" value="{{ object.first_name }}" id="first-name" type="text">
+
+            <label>Last Name</label>
+            <input name="profile[last_name]" value="{{ object.last_name }}" id="last-name" type="text">
+
+
+            <h4 class="margin-top-50 margin-bottom-25">Short Bio</h4>
+            <textarea name="profile[bio]" id="bio" cols="30" rows="10">{{ object.bio }}</textarea>
+
+            <button class="button margin-top-20 margin-bottom-20">Save Changes</button>
+          </form>
+        </div>
+
+        <div class="col-md-4">
+          <!-- Avatar -->
+          <div class="edit-profile-photo">
+            {% liquid
+              assign img_url = object.avatar.photo.versions.small
+              unless img_url
+                assign img_url = 'images/user.svg' | asset_url
+              endunless
+            %}
+            <img src="{{ img_url }}" alt="">
+            <div class="change-photo-btn">
+              <div class="photoUpload">
+
+                  {% render 'theme/simple/photos/uppy_area' %}
+                  <!--<span><i class="fa fa-upload"></i> Upload Photo</span>
+                  <input type="file" class="upload">-->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% render 'theme/simple/photos/uppy_form',
+  object_uuid: object.uuid,
+  presigned_url: presigned_url,
+  user_id: user.id,
+  photo_type: 'avatar',
+  note: 'Image up to 2MB',
+  max_number_of_files: 1
+%}
+
+{% comment %}
 <div class="container flex flex-wrap items-center mx-auto mb-10">
   <h2 class="bigtitle">{{ 'app.profiles.edit' | t }}</h2>
 </div>
@@ -66,3 +197,4 @@
   note: 'Image up to 2MB',
   max_number_of_files: 1
 %}
+{% endcomment %}

@@ -32,6 +32,67 @@ metadata:
     function list = 'lib/queries/items/search', query: context.params, limit: 20, owner: profile_id
   endif
 
-  render 'theme/simple/ui/breadcrumbs', breadcrumbs: context.page.metadata.breadcrumbs
+  assign breadcrumbs = context.page.metadata.breadcrumbs
+%}
+<div id="titlebar">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+        <h2>My Profile</h2>
+
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs">
+          <ul>
+            
+            {% for breadcrumb in breadcrumbs %}
+
+            {% liquid
+              assign is_translation = breadcrumb.label | slice: 0, 4
+
+              if is_translation == 'app.'
+                assign label = breadcrumb.label | t
+              else
+                assign label = breadcrumb.label
+              endif
+            %}
+
+            <li>
+              {% if forloop.last %}
+                <!--<h2>-->
+              {% else %}
+                {% if breadcrumb.url %}
+                  <a href="{{ breadcrumb.url }}">
+                {% endif %}
+              {% endif %}
+                  {{ label }}
+              {% if forloop.last %}
+                {% if value %}
+                    ({{ value }})
+                {% endif %}
+                <!--</h2>-->
+              {% else %}
+                {% if breadcrumb.url %}
+                  </a>
+                {% endif %}
+                
+              {% endif %}
+            </li>
+
+            {% endfor %}
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% comment %}
+render 'theme/simple/ui/breadcrumbs', breadcrumbs: context.page.metadata.breadcrumbs
+{% endcomment %}
+
+{%
   include 'theme/simple/profile/private_feed', section: section, user: profile, list: list, current_profile: current_profile, presigned_url: presigned_url
+}
 %}

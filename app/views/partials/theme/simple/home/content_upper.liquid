@@ -1,0 +1,47 @@
+<div class="parallax" data-background="images/home-parallax.jpg" data-color="#36383e" data-color-opacity="0.45" data-img-width="2500" data-img-height="1600" style="background-image: url(https://uploads.staging.oregon.platform-os.com/instances/5348/assets/images/home-parallax.jpg?updated=1610483755);">
+  <div class="parallax-content">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+
+          <!-- Main Search Container -->
+          <div class="main-search-container">
+            <h2>Find Your Desk</h2>
+            
+            <!-- Main Search -->
+            <form class="main-search-form" action="/quick_search" method="post" name="search">
+              
+              <!-- Type -->
+              <!-- <div class="search-type">
+                <label class="active"><input class="first-tab" name="tab" checked="checked" type="radio">Any Status</label>
+                <label><input name="tab" type="radio">For Sale</label>
+                <label><input name="tab" type="radio">For Rent</label>
+                <div class="search-type-arrow"></div>
+              </div> -->
+
+              
+              <!-- Box -->
+              <div class="main-search-box">
+                
+                <!-- Main Search Input -->
+                <div class="main-search-input larger-input">
+                  <input type="text" class="ico-01" name="qkeyword" id="qkeyword" type="text" value="{{ qkeyword | raw_escape_string }}" placeholder="Enter address e.g. street, city and state or zip" />
+                  <button name="submit" value="search" class="button">{{ 'app.search.search' | t  }}</button>
+                </div>              
+
+              </div>
+              <!-- Box / End -->
+
+            </form>
+            <!-- Main Search -->
+
+          </div>
+          <!-- Main Search Container / End -->
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

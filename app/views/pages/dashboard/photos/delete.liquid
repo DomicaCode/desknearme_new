@@ -2,7 +2,14 @@
 method: post
 ---
 {% liquid
-  graphql r = 'photos/delete', id: context.params.id
-  return context.params.id
-%}
+  graphql r = 'photos/delete', id: context.params.photo.id
 
+  if r.errors
+    assign params['valid'] = false
+    assign params['errors'] = r.errors
+  else
+    assign params['valid'] = true
+  endif
+
+  return params
+%} 

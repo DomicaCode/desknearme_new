@@ -3,7 +3,8 @@ query search(
   $limit: Int = 20
   $tag: String
   $keyword: String
-  $category: String
+  $desk_type_arr: [String]
+  $location_type_arr: [String]
   $sort: RecordsSortInput = { created_at: { order: DESC } }
 ) {
   records(
@@ -14,14 +15,14 @@ query search(
       deleted_at: { exists: false }
       properties: [
         { name: "tags", contains: $tag }
-        { name: "category", starts_with: $category }
+        { name: "category", value_in: $desk_type_arr }
+        { name: "location_type", value_in: $location_type_arr }
         { name: "property_status", value: "active" }
       ]
       or: [
         { properties: { name: "description", contains: $keyword } }
         { properties: { name: "name", contains: $keyword } }
-        { properties: { name: "tags", contains: $keyword } }
-        { properties: { name: "category", contains: $keyword } }
+        { properties: { name: "tags", contains: $keyword } }        
         { properties: { name: "body", contains: $keyword } }
         { properties: { name: "title", contains: $keyword } }
         { properties: { name: "location_name", contains: $keyword } }
@@ -41,6 +42,7 @@ query search(
       name: property(name: "name")
       category: property(name: "category")
       description: property(name: "description")
+      location_address: property(name: "location_address")
       slug: property(name: "slug")
       tags: property_array(name: "tags")
 

@@ -5,6 +5,11 @@ if (uppyPhotos) {
   import(/* webpackChunkName: "photo-upload" */ './photo-upload.js').then(() => {});
 }
 
+const photoDetails = document.querySelector('[data-property-photo-id]');
+if (photoDetails) {
+  import(/* webpackChunkName: "delete-photo" */ './delete-photo.js').then(() => {});
+}
+
 const commentNewPost = document.querySelector('[data-comment-new-post]');
 if (commentNewPost) {
   import(/* webpackChunkName: "comment-new-post" */ './comment-new-post.js').then(() => {});

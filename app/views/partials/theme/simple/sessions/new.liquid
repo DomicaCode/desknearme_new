@@ -1,3 +1,136 @@
+<div class="clearfix"></div>
+<!-- Header Container / End -->
+
+
+
+<!-- Titlebar
+================================================== -->
+<div id="titlebar">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+        <h2>Log In & Register</h2>
+        
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li>Log In & Register</li>
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="row">
+  <div class="col-md-4 col-md-offset-4">
+
+  <!--<button class="button social-login via-twitter"><i class="fa fa-twitter"></i> Log In With Twitter</button>
+  <button class="button social-login via-gplus"><i class="fa fa-google-plus"></i> Log In With Google Plus</button>
+  <button class="button social-login via-facebook"><i class="fa fa-facebook"></i> Log In With Facebook</button>-->
+
+  <!--Tab -->
+  <div class="my-account style-1 margin-top-5 margin-bottom-40">
+
+    <ul class="tabs-nav">
+      <li class="active"><a href="#tab1">Log In</a></li>
+      <li><a href="/sign-up">{{ 'app.login_form.register' | t }}</a></li>
+    </ul>
+
+
+    <div class="tabs-container alt">
+
+      <!-- Login -->
+      <div class="tab-content" id="tab1" style="">
+        <form action="/sessions/create" method="post" class="login">
+
+          {% render 'authenticity_token', context: context %}
+          <p class="form-row form-row-wide">
+            <label for="username">{{ 'app.login_form.email' | t }}:
+              <i class="im im-icon-Male"></i>
+              <input class="input-text" name="user[email]" type="email" id="email" value="{{ object.email | raw_escape_string }}">
+            </label>
+          </p>
+
+          <p class="form-row form-row-wide">
+            <label for="password">{{ 'app.login_form.password' | t }}:
+              <i class="im im-icon-Lock-2"></i>
+              <input class="input-text" name="user[password]" type="password" id="password" value="{{ object.password | raw_escape_string }}">
+            </label>
+          </p>
+
+          <p class="form-row">
+            <input type="hidden" name="user[hid_redirect_url]" id="hid_redirect_url" value="{{ context.params.redirect_url }}">
+            <input type="submit" class="button border margin-top-10" name="login" value="{{ 'app.login_form.log_in' | t }}">
+
+            <label for="rememberme" class="rememberme">
+            <input name="rememberme" type="checkbox" id="rememberme" value="forever"> Remember Me</label>
+          </p>
+
+          <p class="lost_password">
+            <a href="/passwords/reset">{{ 'app.login_form.password_lost' | t }}?</a>
+          </p>
+          
+        </form>
+      </div>
+
+      <!-- Register -->
+      <div class="tab-content" id="tab2" style="display: none;">
+
+        <form method="post" class="register">
+          
+        <p class="form-row form-row-wide">
+          <label for="username2">Username:
+            <i class="im im-icon-Male"></i>
+            <input type="text" class="input-text" name="username" id="username2" value="">
+          </label>
+        </p>
+          
+        <p class="form-row form-row-wide">
+          <label for="email2">Email Address:
+            <i class="im im-icon-Mail"></i>
+            <input type="text" class="input-text" name="email" id="email2" value="">
+          </label>
+        </p>
+
+        <p class="form-row form-row-wide">
+          <label for="password1">Password:
+            <i class="im im-icon-Lock-2"></i>
+            <input class="input-text" type="password" name="password1" id="password1">
+          </label>
+        </p>
+
+        <p class="form-row form-row-wide">
+          <label for="password2">Repeat Password:
+            <i class="im im-icon-Lock-2"></i>
+            <input class="input-text" type="password" name="password2" id="password2">
+          </label>
+        </p>
+
+        <p class="form-row">
+          <input type="submit" class="button border fw margin-top-10" name="register" value="Register">
+        </p>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  </div>
+  </div>
+
+</div>
+
+
+{% comment %}
 <section class="my-10 container items-center">
   <h2 class="bigtitle text-center">{{ 'app.login_form.log_in' | t }}</h2>
 
@@ -17,6 +150,7 @@
     </fieldset>
 
     <fieldset class="mt-5 text-center">
+      <input type="hidden" name="user[hid_redirect_url]" id="hid_redirect_url" value="{{ context.params.redirect_url }}">
       <button class="button mt-3">{{ 'app.login_form.log_in' | t }}</button>
     </fieldset>
   </form>
@@ -28,3 +162,4 @@
     {{ 'app.login_form.password_lost' | t }} <a href='/passwords/reset' class="underline">{{ 'app.login_form.reset' | t }}</a>
   </p>
 </section>
+{% endcomment %}

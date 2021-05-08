@@ -1,7 +1,10 @@
 <div class="mb-4 md:mb-0">
-  {% liquid
+  {% comment %}
+    You need to put nav bar here by below link
     render 'theme/simple/profile/nav', tab: section, user: current_profile, path: 'dashboard'
+  {% endcomment %}
 
+  {% liquid
     if section == 'activity'
       include 'theme/simple/comments/new_entry', commentable: current_profile, commentable_type: 'profile', placeholder: "What's new?", presigned_url: presigned_url
       render 'theme/simple/profile/sections/activity', list: list, current_profile: current_profile

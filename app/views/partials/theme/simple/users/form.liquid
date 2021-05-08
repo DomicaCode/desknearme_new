@@ -1,3 +1,94 @@
+<div class="clearfix"></div>
+<!-- Header Container / End -->
+
+
+
+<div id="titlebar">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+        <h2>Log In &amp; Register</h2>
+        
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li>Log In &amp; Register</li>
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="row">
+  <div class="col-md-4 col-md-offset-4">
+
+  <!--<button class="button social-login via-twitter"><i class="fa fa-twitter"></i> Log In With Twitter</button>
+  <button class="button social-login via-gplus"><i class="fa fa-google-plus"></i> Log In With Google Plus</button>
+  <button class="button social-login via-facebook"><i class="fa fa-facebook"></i> Log In With Facebook</button>-->
+
+  <!--Tab -->
+  <div class="my-account style-1 margin-top-5 margin-bottom-40">
+
+    <ul class="tabs-nav">
+      <li><a href="/sessions/new">Log In</a></li>
+      <li class="active"><a href="/sign-up">{{ 'app.login_form.register' | t }}</a></li>
+    </ul>
+
+
+    <div class="tabs-container alt">
+
+      <!-- Register -->
+      <div class="tab-content" id="tab2">
+
+        <form action="/users" method="post" class="register">
+
+        {% include 'authenticity_token' %}
+          
+        <p class="form-row form-row-wide">
+          <label for="email2">{{ 'app.users.form.email' | t }}:
+            <i class="im im-icon-Mail"></i>
+            <input type="text" class="input-text" name="user[email]" type="email" id="email" value="{{ object.email | raw_escape_string }}">
+          </label>
+        </p>
+
+        <p class="form-row form-row-wide">
+          <label for="password1">{{ 'app.users.form.password' | t }}:
+            <i class="im im-icon-Lock-2"></i>
+            <input class="input-text" type="password" name="user[password]" type="password" id="password" value="{{ object.password | raw_escape_string }}">
+          </label>
+        </p>
+
+        <p class="form-row">
+
+          <label for="rememberme" class="rememberme">
+            <input name="user[agreed]" type="checkbox" id="agreed">{{ 'app.users.form.agreed' | t}}
+          </label>
+          {% include 'theme/simple/field_error', errors: object.errors.agreed %}
+          <br />
+
+          <input type="submit" class="button border fw margin-top-10" name="register" value="{{ 'app.users.form.signup' | t }}">
+        </p>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  </div>
+  </div>
+
+</div>
+
+{% comment %}
 <form action="/users" method="post" class="card w-full md:w-96 mx-auto">
   {% include 'authenticity_token' %}
 
@@ -25,3 +116,4 @@
     <button class="mt-3 button">{{ 'app.users.form.signup' | t }}</button>
   </fieldset>
 </form>
+{% endcomment %}

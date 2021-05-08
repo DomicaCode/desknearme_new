@@ -6,7 +6,7 @@
     {% yield 'custom_styles' %}
   </head>
 
-  <body class="font-sans antialiased leading-normal text-content bg-page">
+  <body>
     {% include 'theme/simple/layout/main', current_profile: context.exports.current_profile %}
     {% yield 'custom_scripts' %}
   </body>

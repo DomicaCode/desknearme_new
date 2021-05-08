@@ -11,7 +11,12 @@ metadata:
 
   function items = 'lib/queries/items/search', limit: 20, owner: current_profile.id, params: context.params, withStatuses: true
   function filters = 'lib/queries/search/filters', query: context.params
-
+%}
+  {% comment %}
   render 'theme/simple/ui/breadcrumbs', breadcrumbs: context.page.metadata.breadcrumbs, value: items.items.total_entries
+  {% endcomment %}
+
+{%
   include 'theme/simple/dashboard/items/index', items: items, role: 'seller', filters: filters
+}
 %}

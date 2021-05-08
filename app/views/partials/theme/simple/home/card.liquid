@@ -1,30 +1,25 @@
-<div class="flex flex-col bg-panel rounded shadow">
-  {% if object.photo %}
-    <a class="block w-full h-64 overflow-hidden rounded-tl rounded-tr" href="{{ object.url }}">
-      <img alt="{{ object.name | default: object.id | truncate: 120 }}" class="block object-cover object-center w-full h-full" src="{{ object.photo.url.versions.small }}">
+<!-- Listing Item -->
+<div class="carousel-item">
+  <div class="listing-item">
+
+
+    <a href="{% render 'link_to', comment: object.name %}" class="listing-img-container">
+      <img src="{{ object.photo.url.versions.small }}" alt="">
     </a>
-  {% elsif target.photo %}
-    <a class="block w-full h-64 overflow-hidden rounded-tl rounded-tr" href="{{ target.url }}">
-      <img alt="{{ target.name | default: object.id | truncate: 120 }}" class="block object-cover object-center w-full h-full" src="{{ target.photo.url.versions.small }}">
-    </a>
-  {% endif %}
+    
+    <div class="listing-content">
 
-  <div class="p-4">
-    <!-- TODO: If empty, dont show. -->
-    <h2 class="text-lg font-medium">
-      <a href="{% render 'link_to', comment: target %}">{{ item.name }}</a>
-    </h2>
+      <div class="listing-title">
+        <h4><a href="{% render 'link_to', comment: object.name %}">{{ object.name }}</a></h4>
+        <a href="{% render 'link_to', comment: target %}" class="listing-address popup-gmaps">
+          <i class="fa fa-map-marker"></i>{{ object.name }}
+        </a>
+      </div>
 
-    <p class="text-lg font-semibold">{{ object.name }}</p>
+    </div>
+    <!-- Listing Item / End -->
 
-    <p class="mt-2 break-all">
-      {% echo object.body | default: object.description | default: object.bio %}
-    </p>
-  </div>
-
-  <div class="flex p-4 mt-auto">
-    <h3 class="ml-auto">
-      {% render 'theme/simple/business_card', user: actor, current_profile: current_profile %}
-    </h3>
   </div>
 </div>
+<!-- Listing Item / End -->
+

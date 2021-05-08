@@ -32,6 +32,44 @@
       {% endfor %}
     </select>
   </div>
+</div>
+
+<div class="flex flex-wrap lg:flex-nowrap items-end my-6">
+
+  <div class="w-full mb-5 md:mb-0 md:mx-6 md:w-auto">
+    <label for="sort_by" class="block mb-1 capitalize">{{ 'app.search.desk_type' | t }}</label>
+    <input type="checkbox" name="chk_desk" id="chk_desk" value="Desk" />Desk&nbsp;
+    <input type="checkbox" name="chk_meeting_rooms" id="chk_meeting_rooms" value="MeetingRoooms" />Meeting Rooms&nbsp;
+    <input type="checkbox" name="chk_office_space" id="chk_office_space" value="OfficeSpace" />Office Space&nbsp;
+    <input type="checkbox" name="chk_salon_booth" id="chk_salon_booth" value="SalonBooth" />Salon Booth&nbsp;
+    <input type="checkbox" name="chk_events" id="chk_events" value="Events" />Events&nbsp;
+    <input type="checkbox" name="chk_lecture_rooms" id="chk_lecture_rooms" value="LectureRooms" />LectureRooms
+  </div>
+</div>
+
+<div class="flex flex-wrap lg:flex-nowrap items-end my-6">
+
+  <div class="w-full mb-5 md:mb-0 md:mx-6 md:w-auto">
+    <label for="sort_by" class="block mb-1 capitalize">{{ 'app.search.pricing_type' | t }}</label>
+    <input type="checkbox" name="chk_per_hour" id="chk_per_hour" value="Per Hour" />Per Hour&nbsp;
+    <input type="checkbox" name="chk_per_day" id="chk_per_day" value="Per Day" />Per Day&nbsp;
+    <input type="checkbox" name="chk_per_week" id="chk_per_week" value="Per Week" />Per Work Week(5 Days)&nbsp;
+    <input type="checkbox" name="chk_per_calender_week" id="chk_per_calender_week" value="Per Calender Week" />Per Calender Week(7 Days)&nbsp;
+    <input type="checkbox" name="chk_per_month" id="chk_per_month" value="Per Month" />Per Month
+  </div>
+</div>
+
+<div class="flex flex-wrap lg:flex-nowrap items-end my-6">
+  
+  <div class="w-full mb-5 md:mb-0 md:mx-6 md:w-auto">
+    <label for="sort_by" class="block mb-1 capitalize">{{ 'app.search.location_type' | t }}</label>
+    <input type="checkbox" name="chk_business" id="chk_business" value="Business" />Business&nbsp;
+    <input type="checkbox" name="chk_co_working" id="chk_co_working" value="Co-Working" />Co-Working&nbsp;
+    <input type="checkbox" name="chk_public" id="chk_public" value="Public" />Public&nbsp;
+    <input type="checkbox" name="chk_executive_suites" id="chk_executive_suites" value="Executive Suites" />Executive Suites
+    <input type="checkbox" name="chk_per_month" id="chk_per_month" value="Per Month" />Per Month
+  </div>
+
 
   <button name="submit" value="search" class="w-full md:w-auto ml-auto button">{{ 'app.search.search' | t }}</button>
 </div>

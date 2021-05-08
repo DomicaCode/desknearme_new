@@ -1,20 +1,29 @@
-{% render 'theme/simple/home/hero' %}
+<div class="container">
+  <div class="row">
+  
+    <div class="col-md-12">
+      <h3 class="headline margin-bottom-25 margin-top-65">Newly Added</h3>
+    </div>
+    
+    <!-- Carousel -->
+    <div class="col-md-12">
+      <div class="carousel">
 
-{% for feed in feeds %}
-  {% if feed[1].results.size > 0 %}
-    <section class="mt-8">
-      <h2 class="bigtitle">
-        {{ feed[0] | t: scope: 'app.home.feeds' }}
-      </h2>
-      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {% for item in feed[1].results %}
-          {% if item.type == 'category' %}
-            {% render 'theme/simple/home/category', object: item %}
-          {% else %}
-            {% render 'theme/simple/home/card', actor: item.payload.actor, target: item.payload.target, object: item.payload.object, type: item.payload.type %}
-          {% endif %}
-        {% endfor %}
+      
+            
+              {% for item in feeds.items.results %}
+                {% if item.type == 'category' %}
+
+                {% else %}
+                  {% render 'theme/simple/home/card', actor: item.payload.actor, target: item.payload.target, object: item.payload.object, type: item.payload.type %}
+                {% endif %}
+              {% endfor %}
+            
+       
+
       </div>
-    </section>
-  {% endif %}
-{% endfor %}
+    </div>
+    <!-- Carousel / End -->
+
+  </div>
+</div>

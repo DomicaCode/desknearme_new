@@ -1,6 +1,58 @@
+---
+method: post
+---
 {% liquid
-  function current_profile = 'lib/current_profile', user_id: context.current_user.id
-  function records = 'lib/queries/models/search', keyword: context.params.qkeyword, limit: 15
+  if context.params.chk_desk
+  	assign desk_type = context.params.chk_desk | split: ','
+  	assign desk_type_arr = desk_type_arr | concat: desk_type
+  endif
+  if context.params.chk_meeting_rooms
+  	assign desk_type = context.params.chk_meeting_rooms | split: ','
+  	assign desk_type_arr = desk_type_arr | concat: desk_type
+  endif
+  if context.params.chk_office_space
+  	assign desk_type = context.params.chk_office_space | split: ','
+  	assign desk_type_arr = desk_type_arr | concat: desk_type
+  endif
+  if context.params.chk_salon_booth
+  	assign desk_type = context.params.chk_salon_booth | split: ','
+  	assign desk_type_arr = desk_type_arr | concat: desk_type
+  endif
+  if context.params.chk_events
+  	assign desk_type = context.params.chk_events | split: ','
+  	assign desk_type_arr = desk_type_arr | concat: desk_type
+  endif
+  if context.params.chk_lecture_rooms
+  	assign desk_type = context.params.chk_lecture_rooms | split: ','
+  	assign desk_type_arr = desk_type_arr | concat: desk_type
+  endif
 
-  render 'theme/simple/quick_search/index', records: records
+
+  if context.params.chk_business
+    assign location_type = context.params.chk_business | split: ','
+    assign location_type_arr = location_type_arr | concat: location_type
+  endif
+  if context.params.chk_co_working
+    assign location_type = context.params.chk_co_working | split: ','
+    assign location_type_arr = location_type_arr | concat: location_type
+  endif
+  if context.params.chk_public
+    assign location_type = context.params.chk_public | split: ','
+    assign location_type_arr = location_type_arr | concat: location_type
+  endif
+  if context.params.chk_executive_suites
+    assign location_type = context.params.chk_executive_suites | split: ','
+    assign location_type_arr = location_type_arr | concat: location_type
+  endif
+
+  if context.params.chk_per_hour
+    assign chk_per_hour = context.params.chk_per_hour | plus: 0
+  endif
+
+
+  function current_profile = 'lib/current_profile', user_id: context.current_user.id
+  function records = 'lib/queries/models/search', keyword: context.params.qkeyword, desk_type_arr: desk_type_arr, location_type_arr:location_type_arr, limit: 15
+
+  render 'theme/simple/quick_search/index', records: records, qkeyword: context.params.qkeyword, ckhdesk: context.params.chk_desk, chkmeetingrooms: context.params.chk_meeting_rooms, chkofficespace: context.params.chk_office_space, chksalonbooth: context.params.chk_salon_booth, chkevents: context.params.chk_events, chklecturerooms: context.params.chk_lecture_rooms, chkbusiness: context.params.chk_business,chkcoworking: context.params.chk_co_working,chkpublic: context.params.chk_public,chkexecutivesuites: context.params.chk_executive_suites,
 %}
+

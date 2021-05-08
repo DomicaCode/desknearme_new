@@ -1,4 +1,112 @@
-  {% comment %}
+{%
+  assign breadcrumbs = context.page.metadata.breadcrumbs
+%}
+<div id="titlebar">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+        <h2>My Profile</h2>
+
+        <!-- Breadcrumbs -->
+        <nav id="breadcrumbs">
+          <ul>
+            
+            {% for breadcrumb in breadcrumbs %}
+
+            {% liquid
+              assign is_translation = breadcrumb.label | slice: 0, 4
+
+              if is_translation == 'app.'
+                assign label = breadcrumb.label | t
+              else
+                assign label = breadcrumb.label
+              endif
+            %}
+
+            <li>
+              {% if forloop.last %}
+                <!--<h2>-->
+              {% else %}
+                {% if breadcrumb.url %}
+                  <a href="{{ breadcrumb.url }}">
+                {% endif %}
+              {% endif %}
+                  {{ label }}
+              {% if forloop.last %}
+                {% if value %}
+                    ({{ value }})
+                {% endif %}
+                <!--</h2>-->
+              {% else %}
+                {% if breadcrumb.url %}
+                  </a>
+                {% endif %}
+                
+              {% endif %}
+            </li>
+
+            {% endfor %}
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <div class="row">
+
+    {% liquid 
+    render 'theme/simple/dashboard/sidebar'
+    %}
+
+    <div class="col-md-8">
+      <table class="manage-table responsive-table">
+
+        <tbody><tr>
+          <th><i class="fa fa-file-text"></i> Property</th>
+          <th class="expire-date"><i class="fa fa-calendar"></i> Status</th>
+          <th></th>
+        </tr>
+
+        
+        {% for item in items.results %}
+
+        {% function item_url = 'link_to', path: '/items/', item: item %}
+
+
+        <!-- Item #1 -->
+        <tr>
+          <td class="title-container">
+            <img src="{{ item.photos[0].photo.url }}" alt="">
+            <div class="title">
+              <h4><a href="#">{{ item.name }}</a></h4>
+              <span>{{ item.location_address }}</span>
+              <span class="table-property-price">{{ item.category }}</span>
+            </div>
+          </td>
+          <td class="expire-date">{% print item.property_status | t %}</td>
+          <td class="action">
+            <a href="/dashboard/items/edit?id={{ item.id }}"><i class="fa fa-pencil"></i> Edit</a>
+            <!--<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>-->
+            <a href="#" class="delete"><i class="fa fa-remove"></i> Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+
+
+      </tbody></table>
+      <!--<a href="submit-property.html" class="margin-top-40 button">Submit New Property</a>-->
+    </div>
+
+  </div>
+</div>
+
+
+{% comment %}
   <a href="?" class="button {% if filters.query.status == blank %}{%else%}button-secondary{%endif%} button-small"> {% print 'app.items.all' | t %} </a>
 {% for s in filters.statuses.items %}
   <a href="?status={{ s[0] }}" class="button {% if s[0] == filters.query.status %}{%else%}button-secondary{%endif%} button-small">
@@ -8,6 +116,7 @@
 {% endcomment %}
 
 
+{% comment %}
 {% if items.results.size > 0 %}
   <table class="w-full table-auto">
     <thead>
@@ -73,3 +182,4 @@
     </a>
   </div>
 {% endif %}
+{% endcomment %}

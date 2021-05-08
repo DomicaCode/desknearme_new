@@ -15,4 +15,8 @@ mutation set_constants($mpo_fee_percent: String!, $stripe_pk_key: String!, $stri
     name
     value
   }
+  use_websocket_chat: constant_set(name: "USE_WEBSOCKET_CHAT", value: "true"){
+    name
+    value
+  }
 }

@@ -299,6 +299,15 @@ en:
         photos: Photos
         category: Category
         description: Description
+        short_description: Short Description
+        location_name: Location Name
+        location_address: Location Address
+        location_type: Location Type
+        zip_code: Zip Code
+        quantity: Quantity
+        availability: Availability
+        property_status: Property Status
+        pricing_type: Pricing Type
         price: Price ($)
         submit: Submit
       ordered_times:
@@ -434,6 +443,9 @@ en:
       search: Search
       keywords: Keywords
       category: Category
+      desk_type: Desk Type
+      pricing_type: Pricing Type
+      location_type: Location Type
       tags: Tags
       sort_by: Sort by
     dashboard-items:

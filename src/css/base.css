@@ -1,1 +1,4 @@
-@import "./base/body";
+@import "./base/bootstrap";
+@import "./base/color";
+@import "./base/icons";
+@import "./base/style";

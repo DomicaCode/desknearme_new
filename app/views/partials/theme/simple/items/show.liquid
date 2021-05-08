@@ -2,336 +2,387 @@
   {% render 'theme/simple/items/metatags', item: item %}
 {% endcontent_for %}
 
-<div class="container">
-  <div class="flex flex-wrap">
-    <div class="w-full md:w-1/2">
-      {% if item.photos.size > 1 %}
-        <div class="relative glider-contain" style="width:281px;">
-          <div class="overflow-x-hidden glider" glider>
-            {% for p in item.photos limit: 5 %}
-              <picture class="object-cover w-full">
-                <source srcset="{{ p.photo.versions.uncropped_webp }}" type="image/webp" alt="{{ item.name }}">
-                <source srcset="{{ p.photo.versions.uncropped }}" type="image/jpeg" alt="{{ item.name }}">
-                <img src="{{ item.photos[0].photo.versions.uncropped }}" alt="{{ item.name }}">
-              </picture>
-            {% endfor %}
-          </div>
+<div class="clearfix"></div>
 
-          <button role="button" aria-label="Previous" class="left-0 glider-prev">
-            <svg viewBox="0 0 16 16" class="w-full" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-            </svg>
-          </button>
-
-          <button role="button" aria-label="Next" class="right-0 glider-next">
-            <svg viewBox="0 0 16 16" class="w-10 h-10" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-            </svg>
-          </button>
-
-          <div role="tablist" class="py-4 glider-dots"></div>
+<div id="titlebar" class="property-titlebar margin-bottom-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        
+        <a href="javascript:history.go(-1)" class="back-to-listings"></a>
+        <div class="property-title">
+          <h2>{{ item.name }}</h2>
+          <span>
+            <a href="#location" class="listing-address">
+              <i class="fa fa-map-marker"></i>
+              {{ item.location_address }}
+            </a>
+          </span>
         </div>
-      {% else %}
-        <picture class="object-cover w-full">
-          <source srcset="{{ item.photos[0].photo.versions.uncropped_webp }}" type="image/webp" alt="{{ item.name }}">
-          <source srcset="{{ item.photos[0].photo.versions.uncropped }}" type="image/jpeg" alt="{{ item.name }}">
-          <img class="break-words" src="{{ item.photos[0].photo.versions.uncropped }}" alt="{{ item.name }}">
-        </picture>
-      {% endif %}
-
-      <div> 
-        <div class="mapouter"><div class="gmap_canvas"><iframe width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q={{ item.location_address }},{{ item.zip_code }}&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://123movies-to.org"></a><br><style>.mapouter{position:relative;text-align:right;height:500px;width:600px;}</style><a href="https://www.embedgooglemap.net">embed google my maps</a><style>.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:600px;}</style></div></div>
       </div>
     </div>
+  </div>
+</div>
 
-    <div class="w-full mt-5 lg:mt-0 lg:w-1/2 lg:pl-10">
-      <h2 class="text-sm tracking-widest ">
-        {% render 'theme/simple/business_card', user: item.owner, current_profile: current_profile %}
-        <a href="/u/{{ item.owner.id }}">{% print 'app.items.by_user' | t %}</a>
-      </h2>
+<div class="container">
+  <div class="row margin-bottom-50">
+    <div class="col-md-12">
+    
+      <!-- Slider -->
+      <div class="property-slider default slick-initialized slick-slider">
+        <button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: inline-block;">Previous</button>
 
-      <h2 class="title mt-7 break-words">
-        {{ item.name }}
-      </h2>
-
-      <div class="flex flex-wrap mb-4">
-        <ul class="flex w-full categories">
-          <li><span class="font-semibold">Category: </span></li>
-          <li class="ml-2"><a href="{% render 'link_to', category: item.category %}">{{ 'categories.' | append: item.category | t }}</a></li>
-        </ul>
+          <div class="slick-list draggable" style="height: 600px;">
+            <div class="slick-track" style="opacity: 1; width: 7080px;">
+              {% for p in item.photos limit: 5 %}
+                <a href="{{ p.photo.versions.uncropped }}" data-background-image="{{ p.photo.versions.uncropped }}" class="item mfp-gallery slick-slide slick-current slick-active" data-slick-index="0" style="background-image: url(&quot;{{ p.photo.versions.uncropped }}&quot;); width: 1180px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;" aria-hidden="false" tabindex="0"></a>
+              {% endfor %}
+            </div>
+          </div>      
+        <button class="slick-next slick-arrow" aria-label="Next" type="button" style="display: inline-block;">Next</button>
       </div>
 
-      <div class="flex flex-wrap mb-4">
-        <ul class="flex w-full categories">
-          <li><span class="font-semibold">Location: </span></li>
-          <li class="ml-2">{{ item.location_name }}</li>
-        </ul>
-      </div>
+      <!-- Slider Thumbs -->
+      <div class="property-slider-nav slick-initialized slick-slider">
+        <div class="slick-list draggable">
+          <div class="slick-track" style="opacity: 1; width: 1188px; transform: translate3d(-198px, 0px, 0px);">
 
-      <div class="flex flex-wrap mb-4">
-        <ul class="flex w-full categories">
-          <li><span class="font-semibold">Type: </span></li>
-          <li class="ml-2">{{ item.location_type }}</li>
-        </ul>
-      </div>
-
-      <div class="flex flex-wrap mb-4">
-        <ul class="flex w-full categories">
-          <li><span class="font-semibold">Address: </span></li>
-          <li class="ml-2">{{ item.location_address }}</li>
-        </ul>
-      </div>
-
-      <div class="flex flex-wrap mb-4">
-        <ul class="flex w-full categories">
-          <li><span class="font-semibold">Zip Code: </span></li>
-          <li class="ml-2">{{ item.zip_code }}</li>
-        </ul>
-      </div>
-
-      <div class="flex flex-wrap mb-4">
-        <ul class="flex w-full categories">
-          <li><span class="font-semibold">Availability: </span></li>
-          <li class="ml-2">
-          {% if item.availability != 'Customize' %}
-          {{ item.availability }}
-          {% else %}
-            {% assign monday_to_hr = item.monday_to_hr | plus: 0 %}
-            {% assign monday_from_hr = item.monday_from_hr | plus: 0 %}
-            {% assign monday_from_min = item.monday_from_min | plus: 0 %}
-            {% assign monday_to_min = item.monday_to_min | plus: 0 %}
-
-            {% assign tuesday_to_hr = item.tuesday_to_hr | plus: 0 %}
-            {% assign tuesday_from_hr = item.tuesday_from_hr | plus: 0 %}
-            {% assign tuesday_from_min = item.tuesday_from_min | plus: 0 %}
-            {% assign tuesday_to_min = item.tuesday_to_min | plus: 0 %}
-
-            {% assign wednesday_to_hr = item.wednesday_to_hr | plus: 0 %}
-            {% assign wednesday_from_hr = item.wednesday_from_hr | plus: 0 %}
-            {% assign wednesday_from_min = item.wednesday_from_min | plus: 0 %}
-            {% assign wednesday_to_min = item.wednesday_to_min | plus: 0 %}
-
-            {% assign thursday_to_hr = item.thursday_to_hr | plus: 0 %}
-            {% assign thursday_from_hr = item.thursday_from_hr | plus: 0 %}
-            {% assign thursday_from_min = item.thursday_from_min | plus: 0 %}
-            {% assign thursday_to_min = item.thursday_to_min | plus: 0 %}
-
-            {% assign friday_to_hr = item.friday_to_hr | plus: 0 %}
-            {% assign friday_from_hr = item.friday_from_hr | plus: 0 %}
-            {% assign friday_from_min = item.friday_from_min | plus: 0 %}
-            {% assign friday_to_min = item.friday_to_min | plus: 0 %}
-
-            {% assign saturday_to_hr = item.saturday_to_hr | plus: 0 %}
-            {% assign saturday_from_hr = item.saturday_from_hr | plus: 0 %}
-            {% assign saturday_from_min = item.saturday_from_min | plus: 0 %}
-            {% assign saturday_to_min = item.saturday_to_min | plus: 0 %}
-
-            {% assign sunday_to_hr = item.sunday_to_hr | plus: 0 %}
-            {% assign sunday_from_hr = item.sunday_from_hr | plus: 0 %}
-            {% assign sunday_from_min = item.sunday_from_min | plus: 0 %}
-            {% assign sunday_to_min = item.sunday_to_min | plus: 0 %}
-
-
-            {% if monday_to_hr > monday_from_hr %}
-            <p><b>Monday:</b> 
-            {% if monday_from_hr < 10 %}0{% endif %}{{ item.monday_from_hr }}:{% if monday_from_min < 10 %}0{% endif %}{{ item.monday_from_min }} 
-            - 
-            {% if monday_to_hr < 10 %}0{% endif %}{{ item.monday_to_hr }}:{% if monday_to_min < 10 %}0{% endif %}{{ item.monday_to_min }} </p>
-            {% endif %}
+            {% for p in item.photos %}
+            <div class="item slick-slide slick-active" data-slick-index="0" aria-hidden="false" tabindex="-1" style="width: 188px;"><img src="{{ p.photo.versions.uncropped }}" alt=""></div>
+            {% endfor %}
             
-            {% if tuesday_to_hr > tuesday_from_hr %}
-            <p><b>Tuesday:</b> 
-            {% if tuesday_from_hr < 10 %}0{% endif %}{{ item.tuesday_from_hr }}:{% if tuesday_from_min < 10 %}0{% endif %}{{ item.tuesday_from_min }} 
-            - 
-            {% if tuesday_to_hr < 10 %}0{% endif %}{{ item.tuesday_to_hr }}:{% if tuesday_to_min < 10 %}0{% endif %}{{ item.tuesday_to_min }}
-            </p>
-            {% endif %}
-
-            {% if wednesday_to_hr > wednesday_from_hr %}
-            <p><b>Wednesday:</b>
-            {% if wednesday_from_hr < 10 %}0{% endif %}{{ item.wednesday_from_hr }}:{% if wednesday_from_min < 10 %}0{% endif %}{{ item.wednesday_from_min }} 
-            - 
-            {% if wednesday_to_hr < 10 %}0{% endif %}{{ item.wednesday_to_hr }}:{% if wednesday_to_min < 10 %}0{% endif %}{{ item.wednesday_to_min }}
-            </p>
-            {% endif %}
-
-            {% if thursday_to_hr > thursday_from_hr %}
-            <p><b>Thursday:</b>
-            {% if thursday_from_hr < 10 %}0{% endif %}{{ item.thursday_from_hr }}:{% if thursday_from_min < 10 %}0{% endif %}{{ item.thursday_from_min }} 
-            - 
-            {% if thursday_to_hr < 10 %}0{% endif %}{{ item.thursday_to_hr }}:{% if thursday_to_min < 10 %}0{% endif %}{{ item.thursday_to_min }}
-            </p>
-            {% endif %}
-
-            {% if friday_to_hr > friday_from_hr %}
-            <p><b>Friday:</b>
-            {% if friday_from_hr < 10 %}0{% endif %}{{ item.friday_from_hr }}:{% if friday_from_min < 10 %}0{% endif %}{{ item.friday_from_min }} 
-            - 
-            {% if friday_to_hr < 10 %}0{% endif %}{{ item.friday_to_hr }}:{% if friday_to_min < 10 %}0{% endif %}{{ item.friday_to_min }}
-            </p>
-            {% endif %}
-
-            {% if saturday_to_hr > saturday_from_hr %}
-            <p><b>Saturday:</b>
-            {% if saturday_from_hr < 10 %}0{% endif %}{{ item.saturday_from_hr }}:{% if saturday_from_min < 10 %}0{% endif %}{{ item.saturday_from_min }} 
-            - 
-            {% if saturday_to_hr < 10 %}0{% endif %}{{ item.saturday_to_hr }}:{% if saturday_to_min < 10 %}0{% endif %}{{ item.saturday_to_min }}
-            </p>
-            {% endif %}
-
-            {% if sunday_to_hr > sunday_from_hr %}
-            <p><b>Sunday:</b>
-            {% if sunday_from_hr < 10 %}0{% endif %}{{ item.sunday_from_hr }}:{% if sunday_from_min < 10 %}0{% endif %}{{ item.sunday_from_min }} 
-            - 
-            {% if sunday_to_hr < 10 %}0{% endif %}{{ item.sunday_to_hr }}:{% if sunday_to_min < 10 %}0{% endif %}{{ item.sunday_to_min }}
-            </p>
-            {% endif %}
-
-          {% endif %}
-          </li>
-        </ul>
+          </div>
+        </div>     
       </div>
-
-
-      {% comment %}
-      <div class="flex flex-wrap mb-4">
-        {%- if item.tags.size > 0 %}
-        <ul class="flex w-full tags">
-          <li><span class="font-semibold">tags: </span></li>
-          {%- for tag in item.tags %}
-            <li class="ml-2">{{ tag }}</li>
-          {%- endfor %}
-        </ul>
-        {%- endif %}
-      </div>
-      {% endcomment %}
-
-      <p class="mt-4 leading-relaxed break-words">{{ item.description }}</p>
-
-      <div class="flex mt-4">
-        <!--<span class="title">{{ item.price | pricify_cents }} <b style="font-size:15px;">({{ item.pricing_type }})</b></span>-->
-
-        <span>
-          <span>
-          <select name="pricing_type" id="pricing_type">
-            <option value=''>Select Pricing Type</option>
-            <option value="price_per_hour">Per Hour</option>
-            <option value="price_per_day">Per Day</option>
-            <option value="price_per_work_week">Per Work Week(5 Days)</option>
-            <option value="price_per_calender_week">Per Calender Week(7 Days)</option>
-            <option value="price_per_month">Per Month</option>
-          </select>
-          </span>
-        </span>
-
-        <span class="price_base_span">
-          <span class="price_span" style="display:none;" id="price_per_hour">
-            {% assign price_per_hour = item.price_per_hour | plus: 0 %}
-            {% if price_per_hour > 1 %}
-              ${{ item.price_per_hour }}
-            {% else %}
-              N/A
-            {% endif %}
-          </span>
-
-          <span class="price_span" style="display:none;" id="price_per_day">
-            {% assign price_per_day = item.price_per_day | plus: 0 %}
-            {% if price_per_day > 1 %}
-              ${{ item.price_per_day }}
-            {% else %}
-              N/A
-            {% endif %}
-          </span>
-
-          <span class="price_span" style="display:none;" id="price_per_work_week">
-            {% assign price_per_work_week = item.price_per_work_week | plus: 0 %}
-            {% if price_per_work_week > 1 %}
-              ${{ item.price_per_work_week }}
-            {% else %}
-              N/A
-            {% endif %}
-          </span>
-
-          <span class="price_span" style="display:none;" id="price_per_calender_week">
-            {% assign price_per_calender_week = item.price_per_calender_week | plus: 0 %}
-            {% if price_per_calender_week > 1 %}
-              ${{ item.price_per_calender_week }}
-            {% else %}
-              N/A
-            {% endif %}
-          </span>        
-
-          <span class="price_span" style="display:none;" id="price_per_month">
-            {% assign price_per_month = item.price_per_month | plus: 0 %}
-            {% if price_per_month > 1 %}
-              ${{ item.price_per_month }}
-            {% else %}
-              N/A
-            {% endif %}
-          </span>
-        </span>
-
-        <!--<form action="/orders/line_items" method="post" class="ml-auto ">
-          {% render 'authenticity_token', authenticity_token: authenticity_token %}
-          <input type="hidden" name="line_item[item_id]" value="{{ item.id }}">
-          <input type="hidden" name="line_item[quantity]" value="1">
-          <button id="buybutton" class="button">
-            {{ 'app.items.buy_for' | t }} {{ item.price | pricify_cents }}
-          </button>
-          {% if item.line_items.size > 0 %}
-            <div>{% print 'app.items.ordered_times' | t: count: item.line_items.size %}</div>
-          {% endif %}
-        </form>-->
-        <button style="margin-left:200px;" id="btnCheckAvailability" class="button">Check Availability</button>
-      </div>
-
-        {%- if item.owner.id == current_profile.id and item.line_items.size < 1 %}
-        <p class="py-4 mt-4 border-t border-blue-300">{{ 'app.items.item_administration' | t }}</p>
-        <span class="flex">
-          <a href="/dashboard/items/edit?id={{ item.id }}" class="button">{{ 'app.items.edit' | t }}</a>
-        <form action="/dashboard/items/delete" method="post" class="ml-2"
-          onSubmit="if(!confirm('{{ 'app.confirm-delete' | t }}')){ return false; }"
-        >
-          {% render 'authenticity_token', authenticity_token: authenticity_token %}
-          <input type="hidden" name="id" value="{{ item.id }}">
-
-          <button id="deletebutton" class="button button-secondary">{{ 'app.delete' | t }}</button>
-        </form>
-      </span>
-      {%- endif %}
 
     </div>
   </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-  $('#pricing_type').change(function(){
-    var this_val = $(this).val();
-    $('.price_base_span').show();
-    if(this_val != '') {
-      $('.price_span').hide();
-      $('#'+this_val).show();
-    } else {
-      $('.price_span').hide();
-      $('.price_base_span').hide();
-    }
-  });
-});
-</script>
+<div class="container">
+  <div class="row">
 
-<style>
-.price_base_span{
-  width: 335px;
-  background-color: blue;
-  text-align: center;
-  vertical-align: bottom;
-  color: #FFF;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 3px;
-  display:none;
-}
-</style>
+    <!-- Property Description -->
+    <div class="col-lg-8 col-md-7 sp-content">
+      <div class="property-description">
+
+        <!-- Main Features -->
+
+        <!-- Description -->
+        <h3 class="desc-headline">Description</h3>
+        <div class="show-more visible">
+          <p>{{item.description}}</p>
+          <!--<a href="#" class="show-more-button">Show More <i class="fa fa-angle-down"></i></a>-->
+        </div>
+
+        <!-- Details -->
+        <h3 class="desc-headline">Details</h3>
+        <ul class="property-features margin-top-0">
+          <li>Category: <span>{{ 'categories.' | append: item.category | t }}</span></li>
+          <li>Location: <span>{{ item.location_name }}</span></li>
+          <li>Type: <span>{{ item.location_type }}</span></li>
+        </ul>
+
+
+        <!-- Features -->
+        <h3 class="desc-headline">Features</h3>
+        <ul class="property-features checkboxes margin-top-0">
+          <li>Air Conditioning</li>
+          <li>Swimming Pool</li>
+          <li>Central Heating</li>
+          <li>Laundry Room</li>
+          <li>Gym</li>
+          <li>Alarm</li>
+          <li>Window Covering</li>
+          <li>Internet</li>
+        </ul>
+
+        
+        <!-- Location -->
+        <h3 class="desc-headline no-border" id="location">Location</h3>
+        <div id="propertyMap-container">
+          <div class="mapouter"><div class="gmap_canvas"><iframe width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q={{ item.location_address }},{{ item.zip_code }}&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://123movies-to.org"></a><br><style>.mapouter{position:relative;text-align:right;height:500px;width:600px;}</style><a href="https://www.embedgooglemap.net">embed google my maps</a><style>.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:600px;}</style></div></div>
+        </div>
+
+      </div>
+    </div>
+    <!-- Property Description / End -->
+
+
+    <!-- Sidebar -->
+    <div class="col-lg-4 col-md-5 sp-sidebar">
+      <div class="sidebar sticky right">
+
+        <!-- Widget -->
+        <div class="widget margin-bottom-30">
+          <button class="widget-button with-tip" data-tip-content="Print"><i class="sl sl-icon-printer"></i></button>
+          <button class="widget-button with-tip" data-tip-content="Add to Bookmarks"><i class="fa fa-star-o"></i></button>
+          <button class="widget-button with-tip compare-widget-button" data-tip-content="Add to Compare"><i class="icon-compare"></i></button>
+          <div class="clearfix"></div>
+        </div>
+        <!-- Widget / End -->
+
+
+        <!-- Booking Widget -->
+        <div class="widget">
+          <div id="booking-widget-anchor" class="boxed-widget booking-widget margin-top-35">
+            <h3><i class="fa fa-calendar-check-o"></i> Schedule a Tour</h3>
+            <div class="row with-forms  margin-top-0">
+
+              <!-- Date Range Picker - docs: http://www.daterangepicker.com/ -->
+              <div class="col-lg-12">
+                <input type="text" id="date-picker" placeholder="Date" readonly="readonly">
+              </div>
+
+              <!-- Panel Dropdown -->
+              <div class="col-lg-12">
+                <div class="panel-dropdown time-slots-dropdown">
+                  <a href="#">Time</a>
+                  <div class="panel-dropdown-content padding-reset">
+                    <div class="panel-dropdown-scrollable">
+                      
+                      <!-- Time Slot -->
+                      <div class="time-slot">
+                        <input type="radio" name="time-slot" id="time-slot-1">
+                        <label for="time-slot-1">
+                          <strong>8:30 am - 9:00 am</strong>
+                          <span>1 slot available</span>
+                        </label>
+                      </div>
+
+                      <!-- Time Slot -->
+                      <div class="time-slot">
+                        <input type="radio" name="time-slot" id="time-slot-2">
+                        <label for="time-slot-2">
+                          <strong>9:00 am - 9:30 am</strong>
+                          <span>2 slots available</span>
+                        </label>
+                      </div>
+
+                      <!-- Time Slot -->
+                      <div class="time-slot">
+                        <input type="radio" name="time-slot" id="time-slot-3">
+                        <label for="time-slot-3">
+                          <strong>9:30 am - 10:00 am</strong>
+                          <span>1 slots available</span>
+                        </label>
+                      </div>
+
+                      <!-- Time Slot -->
+                      <div class="time-slot">
+                        <input type="radio" name="time-slot" id="time-slot-4">
+                        <label for="time-slot-4">
+                          <strong>10:00 am - 10:30 am</strong>
+                          <span>3 slots available</span>
+                        </label>
+                      </div>
+
+                      <!-- Time Slot -->
+                      <div class="time-slot">
+                        <input type="radio" name="time-slot" id="time-slot-5">
+                        <label for="time-slot-5">
+                          <strong>13:00 pm - 13:30 pm</strong>
+                          <span>2 slots available</span>
+                        </label>
+                      </div>
+
+                      <!-- Time Slot -->
+                      <div class="time-slot">
+                        <input type="radio" name="time-slot" id="time-slot-6">
+                        <label for="time-slot-6">
+                          <strong>13:30 pm - 14:00 pm</strong>
+                          <span>1 slots available</span>
+                        </label>
+                      </div>
+
+                      <!-- Time Slot -->
+                      <div class="time-slot">
+                        <input type="radio" name="time-slot" id="time-slot-7">
+                        <label for="time-slot-7">
+                          <strong>14:00 pm - 14:30 pm</strong>
+                          <span>1 slots available</span>
+                        </label>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Panel Dropdown / End -->
+
+            </div>
+            
+            <!-- Book Now -->
+            <a href="#" class="button book-now fullwidth margin-top-5">Send Request</a>
+          </div>
+
+        </div>
+        <!-- Booking Widget / End -->
+
+
+        <!-- Widget -->
+        <div class="widget">
+
+          <!-- Agent Widget -->
+          <div class="agent-widget">
+            <div class="agent-title">
+              <div class="agent-photo"><img src="images/agent-avatar.jpg" alt="" /></div>
+              <div class="agent-details">
+                <h4><a href="#">Jennie Wilson</a></h4>
+                <span><i class="sl sl-icon-call-in"></i>(123) 123-456</span>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <input type="text" placeholder="Your Email" pattern="^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$">
+            <input type="text" placeholder="Your Phone">
+            <textarea>I'm interested in this property [ID 123456] and I'd like to know more details.</textarea>
+            <button class="button fullwidth margin-top-5">Send Message</button>
+          </div>
+          <!-- Agent Widget / End -->
+
+        </div>
+        <!-- Widget / End -->
+
+
+        <!-- Widget -->
+        <div class="widget">
+          <h3 class="margin-bottom-30 margin-top-30">Mortgage Calculator</h3>
+          
+          <!-- Mortgage Calculator -->
+          <form action="javascript:void(0);" autocomplete="off" class="mortgageCalc" data-calc-currency="USD">
+            <div class="calc-input">
+              <div class="pick-price tip" data-tip-content="Set This Property Price"></div>
+                <input type="text" id="amount" name="amount" placeholder="Sale Price" required>
+                <label for="amount" class="fa fa-usd"></label>
+            </div>
+
+            <div class="calc-input">
+                <input type="text" id="downpayment" placeholder="Down Payment">
+                <label for="downpayment" class="fa fa-usd"></label>
+            </div>
+
+            <div class="calc-input">
+              <input type="text" id="years" placeholder="Loan Term (Years)" required>
+              <label for="years" class="fa fa-calendar-o"></label>
+            </div>
+
+            <div class="calc-input">
+              <input type="text" id="interest" placeholder="Interest Rate" required>
+              <label for="interest" class="fa fa-percent"></label>
+            </div>
+
+            <button class="button calc-button" formvalidate>Calculate</button>
+            <div class="calc-output-container"><div class="notification success">Monthly Payment: <strong class="calc-output"></strong></div></div>
+          </form>
+          <!-- Mortgage Calculator / End -->
+
+        </div>
+        <!-- Widget / End -->
+
+
+        <!-- Widget -->
+        <div class="widget">
+          <h3 class="margin-bottom-35">Featured Properties</h3>
+
+          <div class="listing-carousel outer">
+            <!-- Item -->
+            <div class="item">
+              <div class="listing-item compact">
+
+                <a href="#" class="listing-img-container">
+
+                  <div class="listing-badges">
+                    <span class="featured">Featured</span>
+                    <span>For Sale</span>
+                  </div>
+
+                  <div class="listing-img-content">
+                    <span class="listing-compact-title">Eagle Apartments <i>$275,000</i></span>
+
+                    <ul class="listing-hidden-content">
+                      <li>Area <span>530 sq ft</span></li>
+                      <li>Rooms <span>3</span></li>
+                      <li>Beds <span>1</span></li>
+                      <li>Baths <span>1</span></li>
+                    </ul>
+                  </div>
+
+                  <img src="images/listing-01.jpg" alt="">
+                </a>
+
+              </div>
+            </div>
+            <!-- Item / End -->
+
+            <!-- Item -->
+            <div class="item">
+              <div class="listing-item compact">
+
+                <a href="#" class="listing-img-container">
+
+                  <div class="listing-badges">
+                    <span class="featured">Featured</span>
+                    <span>For Sale</span>
+                  </div>
+
+                  <div class="listing-img-content">
+                    <span class="listing-compact-title">Selway Apartments <i>$245,000</i></span>
+
+                    <ul class="listing-hidden-content">
+                      <li>Area <span>530 sq ft</span></li>
+                      <li>Rooms <span>3</span></li>
+                      <li>Beds <span>1</span></li>
+                      <li>Baths <span>1</span></li>
+                    </ul>
+                  </div>
+
+                  <img src="images/listing-02.jpg" alt="">
+                </a>
+
+              </div>
+            </div>
+            <!-- Item / End -->
+
+            <!-- Item -->
+            <div class="item">
+              <div class="listing-item compact">
+
+                <a href="#" class="listing-img-container">
+
+                  <div class="listing-badges">
+                    <span class="featured">Featured</span>
+                    <span>For Sale</span>
+                  </div>
+
+                  <div class="listing-img-content">
+                    <span class="listing-compact-title">Oak Tree Villas <i>$325,000</i></span>
+
+                    <ul class="listing-hidden-content">
+                      <li>Area <span>530 sq ft</span></li>
+                      <li>Rooms <span>3</span></li>
+                      <li>Beds <span>1</span></li>
+                      <li>Baths <span>1</span></li>
+                    </ul>
+                  </div>
+
+                  <img src="images/listing-03.jpg" alt="">
+                </a>
+
+              </div>
+            </div>
+            <!-- Item / End -->
+          </div>
+
+        </div>
+        <!-- Widget / End -->
+
+      </div>
+    </div>
+    <!-- Sidebar / End -->
+
+  </div>
+</div>
+
+<!-- Theme End-->
 

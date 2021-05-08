@@ -5,7 +5,12 @@ method: post
   function object = 'lib/commands/sessions/create', object: context.params.user
 
   if object.valid
-    include 'redirect_to', url: '/', notice: 'app.sessions.created'
+  	if context.params.user.hid_redirect_url == ''
+  		assign redirect_to = '/dashboard'
+  	else 
+  		assign redirect_to = context.params.user.hid_redirect_url
+  	endif
+    include 'redirect_to', url: redirect_to, notice: 'app.sessions.created'
   else
     include 'theme/simple/sessions/new', object: object
   endif
