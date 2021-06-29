@@ -1,8 +1,8 @@
 ---
-method: post
+method: get
 ---
 {% liquid
-  graphql r = 'photos/delete', id: context.params.photo.id
+  graphql r = 'photos/delete', id: context.params.id
 
   if r.errors
     assign params['valid'] = false

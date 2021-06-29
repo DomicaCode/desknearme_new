@@ -1,3 +1,68 @@
+<div class="container public-profile-container padding-top-50">
+  <div class="row">
+    <!-- Widget -->
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- Avatar -->
+          <div class="edit-profile-photo">
+            <img src="{{ user.avatar.photo.url }}" alt="">
+          </div>
+        </div>
+
+        {% if user != blank and user.id != current_profile.id %}
+        <div class="col-xs-12 padding-top-15">
+          
+          {%liquid
+          if current_profile.id != user.id and chat_enabled
+            render "modules/chat/message_button", current_profile: current_profile, user: user, conversation: conversation
+          endif
+          %}
+
+          <!--<a href="#" title="Send message" class="button margin-top-5 margin-bottom-5">Connect</a>
+          <a href="#" title="Send message" class="button margin-top-5 margin-bottom-5">Add to group</a>
+          <a href="#" title="Send message" class="button margin-top-5 margin-bottom-5">Add question</a>-->
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-md-8 agent-page">
+          <div class="agent-content">
+            <div class="agent-name">
+              <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+              <span><b>Username :</b>{{ user.name }}</span>
+            </div>
+
+            <!--<div>
+              <h5>Test Content 1</h5>
+            </div>-->
+  
+            <p>{{ user.bio }}</p>
+  
+            <!--<ul class="agent-contact-details">
+              <li><i class="sl sl-icon-call-in"></i>(123) 123-456</li>
+              <li><i class="fa fa-envelope-o "></i><a href="#">jennie@example.com</a></li>
+            </ul>
+  
+            <ul class="social-icons">
+              <li><a class="facebook" href="#"><i class="icon-facebook"></i></a></li>
+              <li><a class="twitter" href="#"><i class="icon-twitter"></i></a></li>
+              <li><a class="gplus" href="#"><i class="icon-gplus"></i></a></li>
+              <li><a class="linkedin" href="#"><i class="icon-linkedin"></i></a></li>
+            </ul>-->
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% comment %}
 <div class="flex flex-col md:flex-row ">
   <div class="md:w-1/4 mr-5 mb-5 text-center">
 	{% liquid
@@ -34,3 +99,4 @@
   </div>
 </div>
 
+{% endcomment %}

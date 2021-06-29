@@ -4,7 +4,7 @@
 
 <div class="compare-slide-menu">
 
-  <div class="csm-trigger"></div>
+  <!--<div class="csm-trigger"></div>-->
 
   <div class="csm-content">
     <h4>Compare Properties <div class="csm-mobile-trigger"></div></h4>
@@ -72,19 +72,19 @@
 
        
         <ul class="top-bar-menu">
-          <li><i class="fa fa-phone"></i> (123) 123-456 </li>
+          <li><i class="fa fa-phone"></i> 1-888-998-3375 </li>
           <li><i class="fa fa-envelope"></i> <a href="#">office@example.com</a></li>
-          <li>
+          <!--<li>
             <div class="top-bar-dropdown">
               <span>Dropdown Menu</span>
-              <ul class="options">
+              <ul class="options">csm-trigger
                 <li><div class="arrow"></div></li>
                 <li><a href="#">Nice First Link</a></li>
                 <li><a href="#">Second Link With Long Title</a></li>
                 <li><a href="#">Third Link</a></li>
               </ul>
             </div>
-          </li>
+          </li>-->
         </ul>
 
       </div>
@@ -96,10 +96,10 @@
 
         
         <ul class="social-icons">
-          <li><a class="facebook" href="#"><i class="icon-facebook"></i></a></li>
-          <li><a class="twitter" href="#"><i class="icon-twitter"></i></a></li>
-          <li><a class="gplus" href="#"><i class="icon-gplus"></i></a></li>
-          <li><a class="pinterest" href="#"><i class="icon-pinterest"></i></a></li>
+          <li><a class="facebook" href="https://www.facebook.com/DesksNearMe"><i class="icon-facebook"></i></a></li>
+          <li><a class="twitter" href="https://twitter.com/desksnearme"><i class="icon-twitter"></i></a></li>
+          <li><a class="gplus" href="https://currents.google.com/106464452567027684545"><i class="icon-gplus"></i></a></li>
+          <!--<li><a class="pinterest" href="#"><i class="icon-pinterest"></i></a></li>-->
         </ul>
 
       </div>
@@ -116,7 +116,7 @@
         
  
         <div id="logo">
-          <a href="index.html"><img src="{{ 'images/logo.png' | asset_url }}" alt=""></a>
+          <a href="/"><img src="{{ 'images/desknearme_old_logo.png' | asset_url }}" alt=""></a>
         </div>
 
 
@@ -134,13 +134,29 @@
         <nav id="navigation" class="style-1">
           <ul id="responsive">
 
-            <li><a class="current" href="/">Home</a></li>
+            <li><a {% if context.location.pathname == '/' %}class="current"{%endif%} href="/">Home</a></li>
+
+            <li><a href="/about-us" {% if context.location.pathname contains 'about-us' %}class="current"{%endif%}>About Us</a></li>
+
+            <li><a href="/terms-of-service" {% if context.location.pathname contains 'terms-of-service' %}class="current"{%endif%}>Terms of service</a></li>
+
+            <li><a href="/contact-us" {% if context.location.pathname contains 'contact-us' %}class="current"{%endif%}>Contact Us</a></li>
+
+            <li><a href="/faq" {% if context.location.pathname contains 'faq' %}class="current"{%endif%}>Faq</a></li>
+
+            {% if profile %}
+            <li>
+            <a href="/inbox" id="notifications-chat" data-current-user-id="{{ profile.id }}" data-current-user-slug="{{ profile.slug }}" {% if context.location.pathname contains 'inbox' %}class="current"{%endif%}><p class="relative">Chat<span id="notification-bell" style="top: 2px; right: -10px;" class="bg-pink-500"></span></p></a>
+            </li>
+            {% endif %}
+
+            <!--<li><a class="current" href="/">Home</a></li>
 
             <li><a href="/search">Items</a></li>
 
             <li><a href="/groups">Groups</a></li>
 
-            <li><a href="/posts">Questions</a></li>
+            <li><a href="/posts">Questions</a></li>-->
 
           </ul>
         </nav>
@@ -171,10 +187,13 @@
               endif
             %}
 
-            <div class="user-name"  @click="dropdownOpen = !dropdownOpen"><span><img src="{{ avatar_url }}" alt=""></span>Hi, {{ profile.first_name | default: profile.name }}!</div>
+            <div class="user-name"  @click="dropdownOpen = !dropdownOpen"><span><img src="{{ avatar_url }}" alt=""></span>Hi, {{ csm-trigger.first_name | default: profile.name }}!</div>
 
             <ul x-show="dropdownOpen">
               <li><a href="/dashboard"><i class="sl sl-icon-user"></i> My Dashboard</a></li>
+              <li><a href="/sessions/destroy"><i class="sl sl-icon-power"></i> {{ 'app.header.log-out' | t }}</a></li>
+
+              {% comment %}
               <li><i class="sl sl-icon-power"></i>
                 <form action="/sessions/destroy" method="post">
                   {% include 'authenticity_token' %}
@@ -183,6 +202,7 @@
                   </button>
                 </form>
               </li>
+              {% endcomment %}
             </ul>
           </div>
           

@@ -14,13 +14,13 @@
     <div class="row">
       <div class="col-md-12">
 
-        <h2>My Profile</h2>
+        <h2>Add/Update Spaces</h2>
 
         <!-- Breadcrumbs -->
         <nav id="breadcrumbs">
           <ul>
             <li><a href="#">Home</a></li>
-            <li>My Profile</li>
+            <li>Spaces</li>
           </ul>
         </nav>
 
@@ -39,11 +39,8 @@
     <div class="col-md-8">
       <div class="row">
 
-        {{ object.errors }}
-
-
         <div class="col-md-12 my-profile">
-          <h4 class="margin-top-0 margin-bottom-30">Add/Edit Property Details</h4>
+          <h4 class="margin-top-0 margin-bottom-30">Add/Edit Space Details</h4>
 
           <input type="hidden" name="image_delete_token" id="image_delete_token" value="{{ image_delete_token }}" />
           <form action="/dashboard/items/{{ path }}" method="post" id="property_frm">
@@ -57,6 +54,7 @@
 
           <label>{{ 'app.items.form.name' | t }}</label>
           <input id="name" name="item[name]" value="{{ item.name }}" autofocus required type="text">
+          <span class="text-danger">{% include 'theme/simple/field_error', errors: object.errors.name %}</span>
 
           <label>{{ 'app.items.form.photos' | t }}</label>
           {% include 'theme/simple/photos/uppy_area' %}
@@ -65,7 +63,7 @@
           {% if path == 'update' %}
             <div x-data="{ showPhotos: false }">
               <!--<label>{{ 'app.items.form.photos' | t }}</label>-->
-              <input type="button" @click="showPhotos = !showPhotos" class="button margin-top-20 margin-bottom-20" value="View Photo">
+              <input type="button" @click="showPhotos = !showPhotos" class="button margin-top-20 margin-bottom-20" value="View Photos">
 
               <!-- Modal -->
               <div id="photoArea" x-show="showPhotos" class="table-responsive">
@@ -77,7 +75,7 @@
                 {% for p in item.photos limit: 5 %}
                 <tr>
                   <td class="row"><img width="200" height="100" src="{{ p.photo.versions.uncropped }}" alt="{{ item.name }}"></td>
-                  <td><a href="#">Delete</a></td>
+                  <td><a href="/dashboard/photos/delete?id={{ p.id }}&item_id={{ item.id }}">Delete</a></td>
                 </tr>
                 {% endfor %}
                 </table>
@@ -96,21 +94,27 @@
               </option>
             {% endfor %}
           </select>
+          <span class="text-danger">{% include 'theme/simple/field_error', errors: object.errors.category %}</span>
 
           <label>{{ 'app.items.form.short_description' | t }}</label>
           <textarea id="short_description" name="item[short_description]" cols="30" rows="10">{{ item.short_description }}</textarea>
+          <span class="text-danger">{% include 'theme/simple/field_error', errors: object.errors.short_description %}</span>
 
           <label>{{ 'app.items.form.description' | t }}</label>
           <textarea id="description" name="item[description]" cols="30" rows="10">{{ item.description }}</textarea>
+          <span class="text-danger">{% include 'theme/simple/field_error', errors: object.errors.description %}</span>
           
           <label>{{ 'app.items.form.location_name' | t }}</label>
           <input id="location_name" name="item[location_name]" value="{{ item.location_name }}" autofocus required type="text">   
+          <span class="text-danger">{% include 'theme/simple/field_error', errors: object.errors.location_name %}</span>
 
           <label>{{ 'app.items.form.location_address' | t }}</label>
           <textarea id="location_address" name="item[location_address]" cols="30" rows="10">{{ item.location_address }}</textarea>  
+          <span class="text-danger">{% include 'theme/simple/field_error', errors: object.errors.location_address %}</span>
 
           <label>{{ 'app.items.form.zip_code' | t }}</label>
           <input id="zip_code" name="item[zip_code]" value="{{ item.zip_code }}" autofocus required type="text">
+          <span class="text-danger">{% include 'theme/simple/field_error', errors: object.errors.zip_code %}</span>
 
           <label>{{ 'app.items.form.location_type' | t }}</label>
           <select class="form-select" id="location_type" name="item[location_type]">
@@ -119,6 +123,7 @@
             <option value="Public" {% if item.location_type == 'Public' %}selected{% endif %}>Public</option>
             <option value="Executive Suites" {% if item.location_type == 'Executive Suites' %}selected{% endif %}>Executive Suites</option>
           </select>     
+          <span class="text-danger">{% include 'theme/simple/field_error', errors: object.errors.location_type %}</span>
 
           <div class="mt-3" style="display:none;">
             <label class="block" for="pricing_type">{{ 'app.items.form.pricing_type' | t }}</label>

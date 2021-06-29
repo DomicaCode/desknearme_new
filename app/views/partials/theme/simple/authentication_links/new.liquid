@@ -4,11 +4,11 @@
   <form action="/authentication_links/create" method="post" class="card w-full md:w-96 mx-auto">
     {% include 'authenticity_token' %}
 
-    <p>{{ 'app.account.reset_password.description' | t }}</p>
+   <!--<p>{{ 'app.account.reset_password.description' | t }}</p>-->
 
     <fieldset class="mt-5">
       <label for="email">{{ 'app.users.attr.email' | t }}</label>
-      <input name="authentication_link[email]" type="email" id="email" value="{{ object.email }}" class="w-full" autofocus required>
+      <input name="authentication_link[email]" placeholder="{{ 'app.account.reset_password.description' | t }}" type="email" id="email" value="{{ object.email }}" class="w-full" autofocus required>
       {% include 'theme/simple/field_error', errors: object.errors.email %}
     </fieldset>
 

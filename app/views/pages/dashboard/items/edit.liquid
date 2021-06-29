@@ -23,7 +23,11 @@ metadata:
 
   function filters = 'lib/queries/search/filters'
   function presigned_url = 'lib/queries/presigned_url'
+%}
 
+{%comment%}
   render 'theme/simple/ui/breadcrumbs', breadcrumbs: context.page.metadata.breadcrumbs
+{%endcomment%}
+{%  
   include 'theme/simple/items/edit', item: item, lib: filters, presigned_url: presigned_url, user: context.current_user
 %}

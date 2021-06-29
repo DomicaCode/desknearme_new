@@ -8,16 +8,21 @@
 
   <a href="{{ url }}" class="listing-img-container">
     <div class="listing-carousel">
-      <div><img src="{{ model.photo.photo.versions.small | default: default_photo }}" alt="{{ object.name | default: object.id | truncate: 120 }}"></div>
+      <div><img style="height:230px;" src="{{ model.photo.photo.versions.small | default: default_photo }}" alt="{{ object.name | default: object.id | truncate: 120 }}"></div>
     </div>
   </a>
   
   <div class="listing-content">
 
     <div class="listing-title">
-      <h4><a href="{{ url }}">{{ model.name }}</a></h4>
+      {%liquid
+        assign property_name_length = model.name | size
+        assign property_address_length = model.location_address | size
+      %}
+
+      <h4><a href="{{ url }}">{{ model.name | slice: 0, 20 }}{% if property_name_length > 20 %}...{%endif%}</a></h4>
       <a href="{{ url }}" class="listing-address popup-gmaps">
-        <i class="fa fa-map-marker"></i>{{ model.location_address }}
+        <i class="fa fa-map-marker"></i>{{ model.location_address | slice: 0, 30 }}{% if property_address_length > 35 %}...{%endif%}
       </a>
 
       <a href="{{ url }}" class="details button border">Details</a>

@@ -51,17 +51,19 @@
         {% include 'authenticity_token' %}
           
         <p class="form-row form-row-wide">
-          <label for="email2">{{ 'app.users.form.email' | t }}:
+          <label for="email2">{{ 'app.users.form.email' | t }}:</label>
             <i class="im im-icon-Mail"></i>
             <input type="text" class="input-text" name="user[email]" type="email" id="email" value="{{ object.email | raw_escape_string }}">
-          </label>
+            <div class="text-danger">{% include 'theme/simple/field_error', errors: object.errors.email %}</div>
+          
         </p>
 
         <p class="form-row form-row-wide">
-          <label for="password1">{{ 'app.users.form.password' | t }}:
+          <label for="password1">{{ 'app.users.form.password' | t }}:</label>
             <i class="im im-icon-Lock-2"></i>
             <input class="input-text" type="password" name="user[password]" type="password" id="password" value="{{ object.password | raw_escape_string }}">
-          </label>
+            <div class="text-danger">{% include 'theme/simple/field_error', errors: object.errors.password %}</div>
+          
         </p>
 
         <p class="form-row">
@@ -69,7 +71,7 @@
           <label for="rememberme" class="rememberme">
             <input name="user[agreed]" type="checkbox" id="agreed">{{ 'app.users.form.agreed' | t}}
           </label>
-          {% include 'theme/simple/field_error', errors: object.errors.agreed %}
+          <div class="text-danger">{% include 'theme/simple/field_error', errors: object.errors.agreed %}</div>
           <br />
 
           <input type="submit" class="button border fw margin-top-10" name="register" value="{{ 'app.users.form.signup' | t }}">

@@ -51,17 +51,19 @@
 
           {% render 'authenticity_token', context: context %}
           <p class="form-row form-row-wide">
-            <label for="username">{{ 'app.login_form.email' | t }}:
+            <label for="username">{{ 'app.login_form.email' | t }}:</label>
               <i class="im im-icon-Male"></i>
               <input class="input-text" name="user[email]" type="email" id="email" value="{{ object.email | raw_escape_string }}">
-            </label>
+              <div class="text-danger">{% render 'theme/simple/field_error', errors: object.errors.email %}</div>
+            
           </p>
 
           <p class="form-row form-row-wide">
-            <label for="password">{{ 'app.login_form.password' | t }}:
+            <label for="password">{{ 'app.login_form.password' | t }}:</label>
               <i class="im im-icon-Lock-2"></i>
               <input class="input-text" name="user[password]" type="password" id="password" value="{{ object.password | raw_escape_string }}">
-            </label>
+              <div class="text-danger">{% render 'theme/simple/field_error', errors: object.errors.email %}</div>
+            
           </p>
 
           <p class="form-row">
@@ -76,46 +78,6 @@
             <a href="/passwords/reset">{{ 'app.login_form.password_lost' | t }}?</a>
           </p>
           
-        </form>
-      </div>
-
-      <!-- Register -->
-      <div class="tab-content" id="tab2" style="display: none;">
-
-        <form method="post" class="register">
-          
-        <p class="form-row form-row-wide">
-          <label for="username2">Username:
-            <i class="im im-icon-Male"></i>
-            <input type="text" class="input-text" name="username" id="username2" value="">
-          </label>
-        </p>
-          
-        <p class="form-row form-row-wide">
-          <label for="email2">Email Address:
-            <i class="im im-icon-Mail"></i>
-            <input type="text" class="input-text" name="email" id="email2" value="">
-          </label>
-        </p>
-
-        <p class="form-row form-row-wide">
-          <label for="password1">Password:
-            <i class="im im-icon-Lock-2"></i>
-            <input class="input-text" type="password" name="password1" id="password1">
-          </label>
-        </p>
-
-        <p class="form-row form-row-wide">
-          <label for="password2">Repeat Password:
-            <i class="im im-icon-Lock-2"></i>
-            <input class="input-text" type="password" name="password2" id="password2">
-          </label>
-        </p>
-
-        <p class="form-row">
-          <input type="submit" class="button border fw margin-top-10" name="register" value="Register">
-        </p>
-
         </form>
       </div>
 

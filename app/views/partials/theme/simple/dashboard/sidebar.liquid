@@ -6,22 +6,22 @@
       
       <ul class="my-account-nav">
         <li class="sub-nav-title">Manage Account</li>
-        {% assign profile_path = "/profile/" | append: profile.slug %}
+        {% assign profile_path = "/profile/" | append: current_profile.name %}
         <li><a href="{{ profile_path }}" class="current"><i class="sl sl-icon-user"></i> My Profile</a></li>
         <li><a href="/dashboard/profile/edit"><i class="sl sl-icon-user"></i> Profile Edit</a></li>
         <!--<li><a href="my-bookmarks.html"><i class="sl sl-icon-star"></i> Bookmarked Listings</a></li>-->
       </ul>
       
       <ul class="my-account-nav">
-        <li class="sub-nav-title">Selling</li>
-        <li><a href="/dashboard/sell/orders"><i class="sl sl-icon-docs"></i> Sold</a></li>
-        <li><a href="/dashboard/sell/items"><i class="sl sl-icon-docs"></i> Items for sell</a></li>
-        <li><a href="/dashboard/items/new"><i class="sl sl-icon-action-redo"></i> List an Item</a></li>
+        <li class="sub-nav-title">Rental Activity</li>
+        <li><a href="/dashboard/sell/orders"><i class="sl sl-icon-docs"></i> Spaces rented</a></li>
+        <li><a href="/dashboard/sell/items"><i class="sl sl-icon-docs"></i> Your spaces</a></li>
+        <li><a href="/dashboard/items/new"><i class="sl sl-icon-action-redo"></i> Rent a space</a></li>
       </ul>
 
       <ul class="my-account-nav">
-        <li><a href="change-password.html"><i class="sl sl-icon-lock"></i> Change Password</a></li>
-        <li><a href="#"><i class="sl sl-icon-power"></i> Log Out</a></li>
+        <li><a href="#"><i class="sl sl-icon-lock"></i> Change Password</a></li>
+        <li><a href="/sessions/destroy"><i class="sl sl-icon-power"></i> Log Out</a></li>
       </ul>
 
     </div>

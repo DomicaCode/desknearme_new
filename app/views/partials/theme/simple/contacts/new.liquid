@@ -1,5 +1,3 @@
-<h2 class="bigtitle">{{ 'app.models.contacts.contact-us' | t }}</h2>
-
 {% liquid
   if object.id
     assign method = 'put'
@@ -8,6 +6,8 @@
   endif
 %}
 <div class="container flex flex-wrap mx-auto mt-10 groups-center">
+
+  <h2 class="bigtitle">{{ 'app.models.contacts.contact-us' | t }}</h2>
   <form action="/contacts" method="post" class="w-full md:w-2/3">
     {% include 'authenticity_token' %}
     <input type="hidden" name="_method" value="{{method}}" />

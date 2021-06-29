@@ -55,7 +55,6 @@
   </div>
 </div>
 
-
 <div class="container">
   <div class="row">
 
@@ -63,7 +62,12 @@
     render 'theme/simple/dashboard/sidebar'
     %}
 
+    
     <div class="col-md-8">
+      {% if context.params.delete_status and context.params.delete_status == 'success' %}
+      <div class="alert alert-success text-success">Item has been deleted successfully.</div>
+      {% endif %}
+
       <table class="manage-table responsive-table">
 
         <tbody><tr>
@@ -81,10 +85,16 @@
         <!-- Item #1 -->
         <tr>
           <td class="title-container">
-            <img src="{{ item.photos[0].photo.url }}" alt="">
+            <img width="121" height="93" src="{{ item.photos[0].photo.url }}" alt="">
             <div class="title">
-              <h4><a href="#">{{ item.name }}</a></h4>
-              <span>{{ item.location_address }}</span>
+
+              {%liquid
+                assign property_name_length = item.name | size
+                assign property_address_length = item.location_address | size
+              %}
+
+              <h4><a href="/dashboard/items/edit?id={{ item.id }}">{{ item.name | slice: 0, 15 }}{% if property_name_length > 15 %}...{%endif%}</a></h4>
+              <span>{{ item.location_address | slice: 0, 25 }}{% if property_address_length > 25 %}...{%endif%}</span>
               <span class="table-property-price">{{ item.category }}</span>
             </div>
           </td>
@@ -92,7 +102,7 @@
           <td class="action">
             <a href="/dashboard/items/edit?id={{ item.id }}"><i class="fa fa-pencil"></i> Edit</a>
             <!--<a href="#"><i class="fa  fa-eye-slash"></i> Hide</a>-->
-            <a href="#" class="delete"><i class="fa fa-remove"></i> Delete</a>
+            <a href="/dashboard/items/delete?id={{ item.id }}" class="delete"><i class="fa fa-remove"></i> Delete</a>
           </td>
         </tr>
         {% endfor %}
