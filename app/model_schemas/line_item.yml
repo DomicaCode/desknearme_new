@@ -4,12 +4,10 @@ properties:
     type: string
   - name: order_id
     type: string
-  - name: name
-    type: string
-  - name: description
-    type: string
   - name: price_cents
     type: integer
+  - name: currency
+    type: string
   - name: quantity
     type: integer
   - name: total_price_cents

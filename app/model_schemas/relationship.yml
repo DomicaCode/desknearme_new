@@ -7,3 +7,4 @@ properties:
     type: datetime
   - name: r_accepted_at
     type: datetime
+  - name: created_by # for group#invites

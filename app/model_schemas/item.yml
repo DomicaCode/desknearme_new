@@ -1,115 +1,23 @@
 name: item
 properties:
-  - name: uuid
-  - name: name
-    type: string
-  - name: description
-    type: string
-  - name: tags
-    type: array
+  - name: item_inventory_id
   - name: owner
-    type: string
+  - name: uuid
   - name: price
     type: integer
+  - name: original_price
+    type: integer
+  - name: tax_rate
+    type: float
+  - name: currency
   - name: category
-    type: string
   - name: cover_photo_url
-    type: string
   - name: slug
-    type: string
-  - name: short_description
-    type: string
-  - name: location_name
-    type: string
-  - name: location_address
-    type: string
-  - name: zip_code
-    type: string
-  - name: location_type
-    type: string
-  - name: pricing_type
-    type: string
-  - name: quantity
+  - name: return_days
     type: integer
-  - name: availability
-    type: string
-  - name: monday_from_hr
-    type: integer
-  - name: monday_from_min
-    type: integer
-  - name: monday_to_hr
-    type: integer
-  - name: monday_to_min
-    type: integer
-
-  - name: tuesday_from_hr
-    type: integer
-  - name: tuesday_from_min
-    type: integer
-  - name: tuesday_to_hr
-    type: integer
-  - name: tuesday_to_min
-    type: integer
-
-  - name: wednesday_from_hr
-    type: integer
-  - name: wednesday_from_min
-    type: integer
-  - name: wednesday_to_hr
-    type: integer
-  - name: wednesday_to_min
-    type: integer
-
-  - name: thursday_from_hr
-    type: integer
-  - name: thursday_from_min
-    type: integer
-  - name: thursday_to_hr
-    type: integer
-  - name: thursday_to_min
-    type: integer
-
-  - name: friday_from_hr
-    type: integer
-  - name: friday_from_min
-    type: integer
-  - name: friday_to_hr
-    type: integer
-  - name: friday_to_min
-    type: integer
-
-  - name: saturday_from_hr
-    type: integer
-  - name: saturday_from_min
-    type: integer
-  - name: saturday_to_hr
-    type: integer
-  - name: saturday_to_min
-    type: integer
-
-  - name: sunday_from_hr
-    type: integer
-  - name: sunday_from_min
-    type: integer
-  - name: sunday_to_hr
-    type: integer
-  - name: sunday_to_min
-    type: integer
-  - name: property_status
-    type: string
-
-  - name: price_per_hour
-    type: integer
-  - name: price_per_day
-    type: integer
-  - name: price_per_work_week
-    type: integer
-  - name: price_per_calender_week
-    type: integer
-  - name: price_per_month
-    type: integer
-
-
+  - name: promoted
+    type: boolean
+  - name: photo_ids
+    type: array
 
   - name: c__status
-    type: string
