@@ -11,6 +11,7 @@ mutation create_category(
             ]
     }
   ){
-    id properties
+    id
+    key: property(name: "key")
   }
 }

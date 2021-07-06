@@ -1,7 +1,7 @@
 mutation create_status(
   $name: String!
-  $fullname: String!
-  $scope: String!
+  $fullname: String
+  $scope: String
   $timestamp: String!
   $object_id: String!
   $payload: String

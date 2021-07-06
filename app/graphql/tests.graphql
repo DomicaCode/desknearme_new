@@ -1,8 +1,10 @@
 query test_partials($path: String){
   admin_liquid_partials(
+    per_page: 200
     filter: {
       path: { ends_with: "_test", contains: $path }
     }
+
   ) {
     total_entries
     results {

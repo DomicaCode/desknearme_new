@@ -38,6 +38,7 @@ query search(
           timestamp: property(name: "timestamp")
           object_id: property(name: "object_id")
           payload: property(name: "payload")
+          profile_id: property(name: "profile_id")
         }
   }
 }

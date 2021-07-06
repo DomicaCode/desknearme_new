@@ -1,26 +1,40 @@
-mutation create($buyer: String!, $seller: String!) {
-  model_create(
-    model: {
-      model_schema_name: "order"
+mutation create(
+  $buyer: String!
+  $seller: String!
+  $currency: String!
+  $delivery_fee: Int
+  $c__status: String
+) {
+  record_create(
+    record: {
+      table: "order"
       properties: [
-        { name: "buyer" value: $buyer }
-        { name: "seller" value: $seller }
+        { name: "buyer", value: $buyer }
+        { name: "seller", value: $seller }
+        { name: "currency", value: $currency }
+        { name: "delivery_fee", value_int: $delivery_fee }
+        { name: "c__status", value: $c__status }
       ]
     }
-  ){
+  ) {
     id
+    type: table
 
-    buyer: related_user(join_on_property: "buyer", foreign_property: "id") {
+    currency: property(name: "currency")
+
+    buyer: related_record(table: "profile", join_on_property: "buyer", foreign_property: "id") {
       id
-      email
     }
 
-    seller: related_user(join_on_property: "seller", foreign_property: "id") {
+    seller: related_record(table: "organization", join_on_property: "seller", foreign_property: "id") {
       id
-      email
     }
 
-    status: related_model(join_on_property: "id", foreign_property: "object_id", model_schema_name: "status") {
+    status: related_record(
+      table: "status"
+      join_on_property: "id"
+      foreign_property: "object_id"
+    ) {
       id
       created_at
       name: property(name: "name")

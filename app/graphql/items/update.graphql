@@ -1,118 +1,19 @@
 mutation update_item(
   $id: ID!
-  $name: String
-  $description: String
-  $tags: [String]
-  $owner: String
-  $category: String
-  $price: Int
   $c__status: String
-  $uuid: String
-  $slug: String
-  $short_description: String
-  $location_name: String
-  $location_address: String
-  $zip_code: String
-  $location_type: String
-  $pricing_type: String
-  $quantity: Int
-  $availability: String
-  $monday_from_hr: Int
-  $monday_from_min: Int
-  $monday_to_hr: Int
-  $monday_to_min: Int
-  $tuesday_from_hr: Int
-  $tuesday_from_min: Int
-  $tuesday_to_hr: Int
-  $tuesday_to_min: Int
-  $wednesday_from_hr: Int
-  $wednesday_from_min: Int
-  $wednesday_to_hr: Int
-  $wednesday_to_min: Int
-  $thursday_from_hr: Int
-  $thursday_from_min: Int
-  $thursday_to_hr: Int
-  $thursday_to_min: Int
-  $friday_from_hr: Int
-  $friday_from_min: Int
-  $friday_to_hr: Int
-  $friday_to_min: Int
-  $saturday_from_hr: Int
-  $saturday_from_min: Int
-  $saturday_to_hr: Int
-  $saturday_to_min: Int
-  $sunday_from_hr: Int
-  $sunday_from_min: Int
-  $sunday_to_hr: Int
-  $sunday_to_min: Int
-  $property_status: String
-  $price_per_hour: Int
-  $price_per_day: Int
-  $price_per_work_week: Int
-  $price_per_calender_week: Int
-  $price_per_month: Int
-
 ) {
-  model_update(
+  record_update(
     id: $id
-    model: {
+    record: {
+      table: "item"
       properties: [
-        { name: "name", value: $name }
-        { name: "description", value: $description }
-        { name: "tags", value_array: $tags }
-        { name: "owner", value: $owner }
-        { name: "category", value: $category }
-        { name: "price", value_int: $price }
-        { name: "uuid", value: $uuid }
-        { name: "slug", value: $slug }
-        { name: "short_description", value: $short_description }
-        { name: "location_name", value: $location_name }
-        { name: "location_address", value: $location_address }
-        { name: "zip_code", value: $zip_code }
-        { name: "location_type", value: $location_type }
-        { name: "pricing_type", value: $pricing_type }
-        { name: "quantity", value_int: $quantity }
-        { name: "availability", value: $availability }
-        { name: "monday_from_hr", value_int: $monday_from_hr }
-        { name: "monday_from_min", value_int: $monday_from_min }
-        { name: "monday_to_hr", value_int: $monday_to_hr }
-        { name: "monday_to_min", value_int: $monday_to_min }
-        { name: "tuesday_from_hr", value_int: $tuesday_from_hr }
-        { name: "tuesday_from_min", value_int: $tuesday_from_min }
-        { name: "tuesday_to_hr", value_int: $tuesday_to_hr }
-        { name: "tuesday_to_min", value_int: $tuesday_to_min }
-        { name: "wednesday_from_hr", value_int: $wednesday_from_hr }
-        { name: "wednesday_from_min", value_int: $wednesday_from_min }
-        { name: "wednesday_to_hr", value_int: $wednesday_to_hr }
-        { name: "wednesday_to_min", value_int: $wednesday_to_min }
-        { name: "thursday_from_hr", value_int: $thursday_from_hr }
-        { name: "thursday_from_min", value_int: $thursday_from_min }
-        { name: "thursday_to_hr", value_int: $thursday_to_hr }
-        { name: "thursday_to_min", value_int: $thursday_to_min }
-        { name: "friday_from_hr", value_int: $friday_from_hr }
-        { name: "friday_from_min", value_int: $friday_from_min }
-        { name: "friday_to_hr", value_int: $friday_to_hr }
-        { name: "friday_to_min", value_int: $friday_to_min }
-        { name: "saturday_from_hr", value_int: $saturday_from_hr }
-        { name: "saturday_from_min", value_int: $saturday_from_min }
-        { name: "saturday_to_hr", value_int: $saturday_to_hr }
-        { name: "saturday_to_min", value_int: $saturday_to_min }
-        { name: "sunday_from_hr", value_int: $sunday_from_hr }
-        { name: "sunday_from_min", value_int: $sunday_from_min }
-        { name: "sunday_to_hr", value_int: $sunday_to_hr }
-        { name: "sunday_to_min", value_int: $sunday_to_min }
-        { name: "property_status", value: $property_status }
-        { name: "price_per_hour", value_int: $price_per_hour }
-        { name: "price_per_day", value_int: $price_per_day }
-        { name: "price_per_work_week", value_int: $price_per_work_week }
-        { name: "price_per_calender_week", value_int: $price_per_calender_week }
-        { name: "price_per_month", value_int: $price_per_month }
-        # cache
-        { name: "c__status", value: $c__status }
+        { name: "c__status" value: $c__status }
       ]
     }
-  ) {
+  ){
     id
-    name: property(name: "name")
+    created_at
+    updated_at
+    c__status: property(name: "c__status")
   }
 }

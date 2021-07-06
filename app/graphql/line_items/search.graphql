@@ -6,6 +6,7 @@ query search(
   $name: String
   $description: String
   $price_cents: String
+  $currency: String
   $quantity: String
   $total_price_cents: String
 ) {
@@ -15,19 +16,18 @@ query search(
       id: { value: $id }
       table: { value: "line_item" }
       properties: [
-        { name: "item_id" value: $item_id }
-        { name: "order_id" value: $order_id }
-        { name: "name" value: $name }
-        { name: "description" value: $description }
-        { name: "price_cents" value: $price_cents }
-        { name: "quantity" value: $quantity }
-        { name: "total_price_cents" value: $total_price_cents }
+        { name: "item_id", value: $item_id }
+        { name: "order_id", value: $order_id }
+        { name: "name", value: $name }
+        { name: "description", value: $description }
+        { name: "price_cents", value: $price_cents }
+        { name: "quantity", value: $quantity }
+        { name: "total_price_cents", value: $total_price_cents }
+        { name: "currency", value: $currency }
       ]
     }
-    sort: [
-      { created_at: { order: DESC }}
-    ]
-  ){
+    sort: [{ created_at: { order: DESC } }]
+  ) {
     total_entries
     results {
       id
@@ -38,10 +38,35 @@ query search(
       name: property(name: "name")
       description: property(name: "description")
       price_cents: property(name: "price_cents")
-      quantity: property(name: "quantity")
+      currency: property(name: "currency")
+      quantity: property_int(name: "quantity")
       total_price_cents: property(name: "total_price_cents")
-      order: related_records(join_on_property: "order_id", foreign_property: "id", table: "order") {
+      order: related_record(
+        join_on_property: "order_id"
+        foreign_property: "id"
+        table: "order"
+      ) {
         id
+      }
+      line_item_returns: related_records(
+        join_on_property: "id"
+        foreign_property: "line_item_id"
+        table: "line_item_return"
+      ) {
+        id
+        quantity: property_int(name: "quantity")
+
+        status: related_record(
+          join_on_property: "id"
+          foreign_property: "object_id"
+          table: "status"
+          sort: { created_at: { order: ASC } }
+        ) {
+          id
+          created_at
+          name: property(name: "name")
+          timestamp: property(name: "timestamp")
+        }
       }
     }
   }

@@ -1,7 +1,15 @@
-mutation create($name: String!, $l_accepted_at: String!, $r_accepted_at: String, $l_id: String!, $r_id: String!) {
-  model_create(
-    model: {
-      model_schema_name: "relationship"
+mutation create(
+  $name: String!
+  $l_accepted_at: String!
+  $r_accepted_at: String
+  $l_id: String!
+  $r_id: String!
+
+  $model: [String!] = ["profile", "group", "post", "organization", "item"]
+) {
+  record_create(
+    record: {
+      table: "relationship"
       properties: [
         { name: "name" value: $name }
         { name: "l_id" value: $l_id }
@@ -11,6 +19,29 @@ mutation create($name: String!, $l_accepted_at: String!, $r_accepted_at: String,
       ]
     }
   ){
-    id properties
+    id
+    l: related_record(foreign_property: "id" join_on_property: "l_id" table: $model) {
+      ...record
+    }
+    r: related_record(foreign_property: "id" join_on_property: "r_id" table: $model) {
+      ...record
+    }
+  }
+}
+
+fragment record on Record {
+  id
+  type: table
+  name: property(name: "name")
+  first_name: property(name: "first_name")
+  last_name: property(name: "last_name")
+  slug: property(name: "slug")
+  uuid: property(name: "uuid")
+
+  avatar: related_record(table: "photo", join_on_property: "uuid", foreign_property: "object_uuid", filter: { properties: { name: "photo_type", value: "avatar"}}) {
+    photo: property_upload(name: "photo") {
+      url
+      versions
+    }
   }
 }
