@@ -18,7 +18,8 @@
   assign field_erorrs = errors[field_name] | default: '[]' | parse_json
   assign field_erorrs = field_erorrs | add_to_array: msg
 
-  assign errors = errors | add_hash_key: field_name, field_erorrs
+  hash_assign errors[field_name] = field_erorrs
+  hash_assign contract['valid'] = false
 
-  assign contract = contract | add_hash_key: 'valid', false
+  return contract
 %}

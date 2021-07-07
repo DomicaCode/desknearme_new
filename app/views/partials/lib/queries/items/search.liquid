@@ -1,5 +1,6 @@
 {% liquid
-  function query = 'lib/queries/items/search/build', limit: limit, owner: owner, params: params, withStatuses: withStatuses, status: status
+  assign lang = lang | default: context.language
+  function query = 'lib/queries/items/search/build', limit: limit, owner: owner, params: params, withStatuses: withStatuses, status: status, statuses: statuses, lang: lang, only_public: only_public, promoted: promoted
   function items = 'lib/queries/items/search/execute', query: query
 
   hash_assign items['query'] = query

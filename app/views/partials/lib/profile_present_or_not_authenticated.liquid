@@ -1,5 +1,7 @@
 {% liquid
-  if profile.id == blank
+  if allow_anonymous
+    return true
+  elsif profile.id == blank
     include 'theme/json/shared/not_authenticated'
     break
   endif

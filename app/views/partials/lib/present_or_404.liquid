@@ -1,6 +1,6 @@
 {% liquid
-  unless property
+  if property == blank or property contains "translation missing:"
     render 'theme/simple/404', status: 404
     break
-  endunless
+  endif
 %}
