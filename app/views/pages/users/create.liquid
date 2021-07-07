@@ -3,19 +3,23 @@ slug: users
 method: post
 ---
 {% liquid
-  function object = 'lib/commands/users/create', object: context.params.user
+  include 'lib/anonymous_or_redirect', user: context.current_user
+  function object = 'lib/commands/users/create', object: context.params.user, profile: context.params.profile, hcaptcha_params: context.params
 
   if object.valid
-    function session = 'lib/commands/sessions/create/execute', object: context.params.user
-    function profile = 'lib/commands/profiles/create', user: object
+    function profile_object = 'lib/commands/profiles/create_or_convert_anonymous/build', object: context.params.profile, user: object, session: context.session
+    function profile = 'lib/commands/profiles/create_or_convert_anonymous', object: profile_object
 
     if profile.valid == false
-      log profile, type: 'showme'
+      log profile, type: 'ERROR: users/create profile'
       break
     endif
 
-    include 'lib/commands/events/create', type: 'account_created', actor_id: profile.id
-    include 'redirect_to', url: '/dashboard', notice: 'app.account.created'
+    assign url = context.session.return_to | default: '/dashboard'
+    include 'lib/commands/events/create', type: 'account_created', actor_id: profile.id, object_id: profile.id
+
+    sign_in_rc user_id: object.id
+    include 'redirect_to', url: url, notice: 'app.account.created'
   else
     include 'theme/simple/users/new', object: object
   endif

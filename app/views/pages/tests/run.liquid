@@ -2,5 +2,7 @@
 layout: test
 ---
 {% liquid
-  include 'test/run', format: context.params.formatter
+  if context.environment == 'staging'
+    include 'test/run', format: context.params.formatter
+  endif
 %}
