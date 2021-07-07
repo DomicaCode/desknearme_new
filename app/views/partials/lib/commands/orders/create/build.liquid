@@ -6,7 +6,10 @@
 {% parse_json object %}
 {
   "buyer":   "{% print current_user_id %}",
-  "seller":  "{% print item.owner.id %}"
+  "seller":  "{% print item.item_inventory.owner.id %}",
+  "currency": {{ item.currency | json }},
+  "delivery_fee":  {{ item.item_inventory.owner.delivery_fee | json }},
+  "c__status": "app.statuses.orders.placed"
 }
 {% endparse_json %}
 

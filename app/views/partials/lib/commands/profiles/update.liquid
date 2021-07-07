@@ -1,6 +1,6 @@
 {% liquid
   function object = 'lib/commands/profiles/update/build', object: object, profile: profile
-  function object = 'lib/commands/profiles/update/check', object: object
+  function object = 'lib/commands/profiles/update/check', object: object, current_profile: profile
 
   if object.valid
     function object = 'lib/commands/execute', object: object, mutation_name: 'profiles/update', selection: 'model_update'

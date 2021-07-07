@@ -1,5 +1,9 @@
 {% liquid
-  graphql r = "email_send", template: template, data: object
+  if template
+    graphql r = "email_send", template: template, data: object
+  else
+    graphql r = "email_send", template: 'generic', data: object
+  endif
 
   if r.errors
     log r.errors, type: 'errors.graphql.invalid'

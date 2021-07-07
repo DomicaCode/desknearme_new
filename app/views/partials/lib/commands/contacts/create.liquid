@@ -1,6 +1,6 @@
 {%  liquid
   function object = 'lib/commands/contacts/create/build', object: object
-  function object = 'lib/commands/contacts/create/check', object: object
+  function object = 'lib/commands/contacts/create/check', object: object, hcaptcha_params: hcaptcha_params
 
   if object.valid
     function object = 'lib/commands/execute', mutation_name: 'contacts/create' object: object

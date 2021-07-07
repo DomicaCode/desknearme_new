@@ -1,6 +1,4 @@
 {% liquid
-  log command, type: 'command'
-
   assign build_path = 'lib/commands/' | append: command | append: '/build'
   function object = build_path, object: object
 

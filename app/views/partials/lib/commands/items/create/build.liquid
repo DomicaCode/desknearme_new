@@ -1,64 +1,16 @@
 {% parse_json object %}
   {
-    "id":          {{ object.id | json }},
-    "owner":       {{ owner | json }},
-    "name":        {{ object.name | json }},
-    "tags":        {{ object.tags | downcase | split: ',' | uniq }},
-    "description": {{ object.description | default: "" | json }},
-    "category":    {{ object.category | default: "" | json }},
-    "price":       {{ object.price | plus: 0 | times: 100 | to_positive_integer: 1 }},
+    "item_inventory_id": {{ object.item_inventory_id | json }},
     "uuid":        {{ object.uuid | json }},
-    "short_description": {{ object.short_description | default: "" | json }},
-    "location_name": {{ object.location_name | default: "" | json }},
-    "location_address": {{ object.location_address | default: "" | json }},
-    "zip_code": {{ object.zip_code | default: "" | json }},
-    "location_type": {{ object.location_type | default: "" | json }},
-    "pricing_type": {{ object.pricing_type | default: "" | json }},
-    "quantity": {{ object.quantity | plus: 0 | times: 100 | to_positive_integer: 1 }},
-    "availability": {{ object.availability | default: "" | json }},
-    "property_status": {{ object.property_status | default: "" | json }},
-
-    "monday_from_hr": {{ object.monday_from_hr | plus: 0 }},
-    "monday_from_min": {{ object.monday_from_min | plus: 0 }},
-    "monday_to_hr": {{ object.monday_to_hr | plus: 0 }},
-    "monday_to_min": {{ object.monday_to_min | plus: 0 }},
-
-    "tuesday_from_hr": {{ object.tuesday_from_hr | plus: 0 }},
-    "tuesday_from_min": {{ object.tuesday_from_min | plus: 0 }},
-    "tuesday_to_hr": {{ object.tuesday_to_hr | plus: 0 }},
-    "tuesday_to_min": {{ object.tuesday_to_min | plus: 0 }},
-
-    "wednesday_from_hr": {{ object.wednesday_from_hr | plus: 0 }},
-    "wednesday_from_min": {{ object.wednesday_from_min | plus: 0 }},
-    "wednesday_to_hr": {{ object.wednesday_to_hr | plus: 0 }},
-    "wednesday_to_min": {{ object.wednesday_to_min | plus: 0 }},
-
-    "thursday_from_hr": {{ object.thursday_from_hr | plus: 0 }},
-    "thursday_from_min": {{ object.thursday_from_min | plus: 0 }},
-    "thursday_to_hr": {{ object.thursday_to_hr | plus: 0 }},
-    "thursday_to_min": {{ object.thursday_to_min | plus: 0 }},
-
-    "friday_from_hr": {{ object.friday_from_hr | plus: 0 }},
-    "friday_from_min": {{ object.friday_from_min | plus: 0 }},
-    "friday_to_hr": {{ object.friday_to_hr | plus: 0 }},
-    "friday_to_min": {{ object.friday_to_min | plus: 0 }},
-
-    "saturday_from_hr": {{ object.saturday_from_hr | plus: 0 }},
-    "saturday_from_min": {{ object.saturday_from_min | plus: 0 }},
-    "saturday_to_hr": {{ object.saturday_to_hr | plus: 0 }},
-    "saturday_to_min": {{ object.saturday_to_min | plus: 0 }},
-
-    "sunday_from_hr": {{ object.sunday_from_hr | plus: 0 }},
-    "sunday_from_min": {{ object.sunday_from_min | plus: 0 }},
-    "sunday_to_hr": {{ object.sunday_to_hr | plus: 0 }},
-    "sunday_to_min": {{ object.sunday_to_min | plus: 0 }},
-
-    "price_per_hour": {{ object.price_per_hour | plus: 0 | times: 1 | to_positive_integer: 0 }},
-    "price_per_day": {{ object.price_per_day | plus: 0 | times: 1 | to_positive_integer: 0 }},
-    "price_per_work_week": {{ object.price_per_work_week | plus: 0 | times: 1 | to_positive_integer: 0 }},
-    "price_per_calender_week": {{ object.price_per_calender_week | plus: 0 | times: 1 | to_positive_integer: 0 }},
-    "price_per_month": {{ object.price_per_month | plus: 0 | times: 1 | to_positive_integer: 0 }}
-
+    "currency":    {{ object.currency | json }},
+    "price":       {{ object.price | plus: 0 | amount_to_fractional: object.currency | to_positive_integer: 1 }},
+    "return_days": {{ object.return_days | plus: 0 | json }},
+    "tax_rate":    {{ object.tax_rate | json }},
+    "category":    {{ object.category | default: "" | json }},
+    "lang":        {{ object.lang | default: "en" | json }},
+    "name":        {{ object.name | json }},
+    "description": {{ object.description | default: "" | json }},
+    "tags":        {{ object.tags | downcase | split: ',' | uniq }}
   }
 {% endparse_json %}
 

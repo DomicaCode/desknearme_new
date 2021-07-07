@@ -18,7 +18,7 @@
         "price_data": {
           "product_data": { "name": "{{line.name}}" },
           "unit_amount": {{ line.total_price_cents }},
-          "currency": "usd"
+          "currency": {{ line.currency | json }}
         },
         "quantity": 1
       }

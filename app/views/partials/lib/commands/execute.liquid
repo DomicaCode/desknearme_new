@@ -4,7 +4,8 @@
   graphql r = mutation_name, args: object
 
   if r.errors
-    log r.errors, type: 'errors.graphql.invalid showme'
+    assign type = 'errors.graphql.invalid showme: ' | append: mutation_name
+    log r.errors, type: type
 
     hash_assign object['valid'] = false
     hash_assign object['errors'] = r.errors

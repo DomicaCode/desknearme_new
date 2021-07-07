@@ -1,4 +1,5 @@
 {%  liquid
+  assign detail_params = object
   function object = 'lib/commands/items/create/build', object: object, owner: owner
   function object = 'lib/commands/items/create/check', object: object
 
@@ -6,8 +7,16 @@
     function object = 'lib/commands/items/create/execute', object: object
 
     if object.valid
-      assign now = 'now' | to_time
-      function relation = 'lib/commands/relationships/create', name: 'ownership', l_id: owner, r_id: object.id, l_at: now, r_at: now
+      assign detail_object = '{}' | parse_json
+      hash_assign detail_params['item_id'] = object.id
+      hash_assign detail_params['name'] = detail_params.name
+      hash_assign detail_params['description'] = detail_params.description
+      hash_assign detail_params['lang'] = detail_params.lang
+      function attributes = 'lib/commands/item_details/create', object: detail_params
+      if attributes.valid != true
+        log attributes, type: 'items#create attributes error'
+      endif
+
     endif
   endif
 

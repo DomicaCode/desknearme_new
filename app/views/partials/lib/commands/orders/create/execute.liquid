@@ -8,7 +8,7 @@
     hash_assign object['valid'] = false
     hash_assign object['errors'] = r.errors
   else
-    assign object = r.model_create
+    assign object = r.record_create
     hash_assign object['valid'] = true
   endif
 

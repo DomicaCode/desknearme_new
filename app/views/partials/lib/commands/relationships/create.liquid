@@ -4,7 +4,7 @@
   function object = 'lib/commands/relationships/create/check', object: object
 
   if object.valid
-    function object = 'lib/commands/execute', mutation_name: 'relationships/create' object: object
+    function object = 'lib/commands/execute', mutation_name: 'relationships/create' object: object, selection: 'record_create'
   else
     log object, type: 'showme relationships/create object invalid'
   endif
